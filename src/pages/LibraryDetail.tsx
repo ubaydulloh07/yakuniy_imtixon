@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 
 interface Book {
   id: number;
@@ -10,7 +10,7 @@ interface Book {
 }
 
 const LibraryDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  // const { id } = useParams<{ id: string }>();
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 10;
 
