@@ -6,7 +6,7 @@ import LibraryList from '../pages/LibraryList';
 import LibraryDetail from '../pages/LibraryDetail';
 import LibraryProfile from '../pages/LibraryProfile';
 import Login from '../pages/Login';
-import LibrarianRegistration from '../pages/LibrarianRegistration';
+import Register from '../pages/Register';
 import AddBooks from '../pages/AddBooks';
 
 const router = createBrowserRouter([
@@ -38,8 +38,8 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: '/register',
-        element: <LibrarianRegistration />,
+        path: '/librarian/register',
+        element: <Register />,
       },
       {
         path: '/add-books',
