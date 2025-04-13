@@ -1,13 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import LibraryList from './pages/LibraryList';
 import LibraryDetail from './pages/LibraryDetail';
-import AddBook from './pages/AddBook';
+import AddBook from './pages/AddBooks';
 import './styles/global.css';
 
 const App: React.FC = () => {
@@ -26,6 +27,7 @@ const App: React.FC = () => {
             <Route path="/librarian/add-book" element={<AddBook />} />
           </Routes>
         </main>
+        <Footer />
       </div>
     </Router>
   );

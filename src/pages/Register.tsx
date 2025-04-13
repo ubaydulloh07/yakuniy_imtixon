@@ -1,302 +1,390 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authAPI } from '../services/api';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import { registerLibrary } from '../services/api';
 import '../styles/register.css';
 
-interface UserAndLibrary {
-  user: {
-    password: string;
-    name: string;
-    phone: string;
-  };
-  library: {
-    address: string;
-    social_media?: {
-      website?: string;
-      facebook?: string;
-      instagram?: string;
-      telegram?: string;
-    };
-    can_rent_books: boolean;
-    latitude?: string;
-    longitude?: string;
-  };
+interface RegisterData {
+  libraryName: string;
+  adminName: string;
+  password: string;
+  phoneNumber: string;
+  allowBookRentals: boolean;
+  address: string;
+  latitude: string;
+  longitude: string;
+  socialMedia: Array<{
+    platform: string;
+    url: string;
+  }>;
 }
+
+// Leaflet marker ikonkasini sozlash
+const defaultIcon = L.icon({
+  iconUrl: markerIcon,
+  iconRetinaUrl: markerIcon2x,
+  shadowUrl: markerShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
+L.Marker.prototype.options.icon = defaultIcon;
+
+const MapEvents = ({ onLocationSelect }: { onLocationSelect: (lat: number, lng: number) => void }) => {
+  useMapEvents({
+    click: (e) => {
+      onLocationSelect(e.latlng.lat, e.latlng.lng);
+    },
+  });
+  return null;
+};
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<UserAndLibrary>({
-    user: {
-      name: '',
-      phone: '',
-      password: ''
-    },
-    library: {
-      address: '',
-      social_media: {},
-      can_rent_books: false,
-      latitude: '',
-      longitude: ''
-    }
+  const [searchQuery, setSearchQuery] = useState('');
+  const [position, setPosition] = useState<[number, number]>([41.311081, 69.240562]); // Toshkent markazi
+  const [registerData, setRegisterData] = useState<RegisterData>({
+    libraryName: '',
+    adminName: '',
+    password: '',
+    phoneNumber: '',
+    allowBookRentals: false,
+    address: '',
+    latitude: '',
+    longitude: '',
+    socialMedia: [{ platform: 'telegram', url: '' }]
   });
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
 
-  const handleUserInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    setRegisterData(prev => ({
       ...prev,
-      user: {
-        ...prev.user,
-        [name]: value
-      }
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
 
-  const handleLibraryInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    if (name.startsWith('social_')) {
-      const socialKey = name.replace('social_', '');
-      setFormData(prev => ({
+  const handleSocialMediaChange = (index: number, field: 'platform' | 'url', value: string) => {
+    setRegisterData(prev => {
+      const newSocialMedia = [...prev.socialMedia];
+      newSocialMedia[index] = {
+        ...newSocialMedia[index],
+        [field]: value
+      };
+      return {
         ...prev,
-        library: {
-          ...prev.library,
-          social_media: {
-            ...prev.library.social_media,
-            [socialKey]: value || undefined
+        socialMedia: newSocialMedia
+      };
+    });
+  };
+
+  const addSocialMedia = () => {
+    setRegisterData(prev => ({
+      ...prev,
+      socialMedia: [...prev.socialMedia, { platform: '', url: '' }]
+    }));
+  };
+
+  const removeSocialMedia = (index: number) => {
+    setRegisterData(prev => ({
+      ...prev,
+      socialMedia: prev.socialMedia.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleLocationSelect = async (lat: number, lng: number) => {
+    setPosition([lat, lng]);
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=uz`,
+        {
+          headers: {
+            'Accept-Language': 'uz',
+            'User-Agent': 'SmartLibraryApp/1.0'
           }
         }
-      }));
-    } else {
-      setFormData(prev => ({
+      );
+      const data = await response.json();
+      
+      setRegisterData(prev => ({
         ...prev,
-        library: {
-          ...prev.library,
-          [name]: type === 'checkbox' ? checked : value
-        }
+        address: data.display_name,
+        latitude: lat.toString(),
+        longitude: lng.toString()
       }));
+    } catch (error) {
+      console.error('Manzilni aniqlashda xatolik:', error);
+    }
+  };
+
+  const handleLocationSearch = async () => {
+    if (searchQuery) {
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&accept-language=uz`,
+          {
+            headers: {
+              'Accept-Language': 'uz',
+              'User-Agent': 'SmartLibraryApp/1.0'
+            }
+          }
+        );
+        const data = await response.json();
+        
+        if (data && data[0]) {
+          const { lat, lon, display_name } = data[0];
+          setPosition([parseFloat(lat), parseFloat(lon)]);
+          setRegisterData(prev => ({
+            ...prev,
+            address: display_name,
+            latitude: lat,
+            longitude: lon
+          }));
+        }
+      } catch (error) {
+        console.error('Qidirishda xatolik:', error);
+      }
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
-
-    // Validatsiya
-    if (formData.user.password !== confirmPassword) {
-      setError('Parollar mos kelmadi');
-      return;
-    }
-
-    if (formData.user.password.length < 1 || formData.user.password.length > 128) {
-      setError('Parol uzunligi 1 dan 128 gacha bo\'lishi kerak');
-      return;
-    }
-
-    if (formData.user.name.length > 50) {
-      setError('Ism 50 ta belgidan oshmasligi kerak');
-      return;
-    }
-
-    const phoneRegex = /^\+?[0-9]{9,14}$/;
-    if (!phoneRegex.test(formData.user.phone)) {
-      setError('Telefon raqami noto\'g\'ri formatda');
-      return;
-    }
-
     try {
-      await authAPI.registerLibrary(formData);
-      setSuccess('Ro\'yxatdan o\'tish muvaffaqiyatli yakunlandi. Admin tasdiqlashini kuting.');
-      
+      await registerLibrary({
+        user: {
+          password: registerData.password,
+          name: registerData.adminName,
+          phone: registerData.phoneNumber
+        },
+        library: {
+          name: registerData.libraryName,
+          address: registerData.address,
+          social_media: registerData.socialMedia.map(social => ({
+            platform: social.platform,
+            link: social.url
+          })),
+          can_rent_books: registerData.allowBookRentals,
+          latitude: registerData.latitude,
+          longitude: registerData.longitude
+        }
+      });
+
+      alert('Muvaffaqiyatli ro\'yxatdan o\'tdingiz! Admin tasdiqlashini kuting.');
       setTimeout(() => {
         navigate('/login');
-      }, 3000);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Ro\'yxatdan o\'tishda xatolik yuz berdi');
+      }, 2000);
+    } catch (error) {
+      console.error('Registration failed:', error);
+      alert(error instanceof Error ? error.message : 'Ro\'yxatdan o\'tishda xatolik yuz berdi');
     }
   };
+  
+  
 
   return (
     <div className="register-page">
-      <div className="register-container">
-        <h1>Kutubxonachi sifatida ro'yxatdan o'tish</h1>
-        
-        {error && <div className="error-message">{error}</div>}
-        {success && <div className="success-message">{success}</div>}
+      <h1>Kutubxonachi ro'yxatdan o'tish</h1>
+      <p className="subtitle">Kutubxona ma'lumotlarini to'ldiring</p>
 
-        <form onSubmit={handleSubmit} className="register-form">
-          <div className="form-section">
-            <h2>Shaxsiy ma'lumotlar</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="form-section">
+          <h2>Kutubxona ma'lumotlari</h2>
+          
+          <div className="form-group">
+            <label htmlFor="libraryName">Kutubxona nomi</label>
+            <input
+              type="text"
+              id="libraryName"
+              name="libraryName"
+              placeholder="Kutubxona nomini kiriting"
+              value={registerData.libraryName}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-row">
             <div className="form-group">
-              <label htmlFor="name">To'liq ism</label>
+              <label htmlFor="adminName">Admin ismi</label>
               <input
                 type="text"
-                id="name"
-                name="name"
-                value={formData.user.name}
-                onChange={handleUserInputChange}
+                id="adminName"
+                name="adminName"
+                placeholder="Admin ismini kiriting"
+                value={registerData.adminName}
+                onChange={handleInputChange}
                 required
-                maxLength={50}
-                placeholder="To'liq ismingizni kiriting"
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="phone">Telefon raqam</label>
+              <label htmlFor="phoneNumber">Telefon raqami</label>
               <input
                 type="tel"
-                id="phone"
-                name="phone"
-                value={formData.user.phone}
-                onChange={handleUserInputChange}
+                id="phoneNumber"
+                name="phoneNumber"
+                placeholder="Telefon raqamini kiriting"
+                value={registerData.phoneNumber}
+                onChange={handleInputChange}
                 required
-                pattern="^\+?[0-9]{9,14}$"
-                placeholder="+998901234567"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="password">Parol</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.user.password}
-                onChange={handleUserInputChange}
-                required
-                maxLength={128}
-                placeholder="Parolni kiriting"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="confirmPassword">Parolni tasdiqlang</label>
-              <input
-                type="password"
-                id="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                placeholder="Parolni qayta kiriting"
               />
             </div>
           </div>
 
-          <div className="form-section">
-            <h2>Kutubxona ma'lumotlari</h2>
-            <div className="form-group">
-              <label htmlFor="address">Manzil</label>
+          <div className="form-group">
+            <label htmlFor="password">Parol</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Parolni kiriting"
+              value={registerData.password}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-group checkbox">
+            <input
+              type="checkbox"
+              id="allowBookRentals"
+              name="allowBookRentals"
+              checked={registerData.allowBookRentals}
+              onChange={handleInputChange}
+            />
+            <label htmlFor="allowBookRentals">Kitob ijarasi</label>
+          </div>
+        </div>
+
+        <div className="form-section">
+          <h2>Manzil</h2>
+          
+          <div className="form-group">
+            <div className="search-box">
               <input
                 type="text"
-                id="address"
-                name="address"
-                value={formData.library.address}
-                onChange={handleLibraryInputChange}
-                required
-                minLength={1}
-                placeholder="Kutubxona manzilini kiriting"
+                placeholder="Manzilni qidiring"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <button type="button" className="search-btn" onClick={handleLocationSearch}>
+                Qidirish
+              </button>
+            </div>
+          </div>
+
+          <div className="map-container">
+            <MapContainer
+              center={position}
+              zoom={13}
+              style={{ height: '400px', width: '100%' }}
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+              <Marker position={position} />
+              <MapEvents onLocationSelect={handleLocationSelect} />
+            </MapContainer>
+          </div>
+
+          <div className="location-details">
+            <div className="form-group">
+              <label>Tanlangan manzil:</label>
+              <input
+                type="text"
+                value={registerData.address}
+                readOnly
+                className="readonly-input"
               />
             </div>
 
-            <div className="form-group">
-              <label className="checkbox-label">
+            <div className="form-row">
+              <div className="form-group">
+                <label>Latitude:</label>
                 <input
-                  type="checkbox"
-                  name="can_rent_books"
-                  checked={formData.library.can_rent_books}
-                  onChange={handleLibraryInputChange}
+                  type="text"
+                  value={registerData.latitude}
+                  readOnly
+                  className="readonly-input"
                 />
-                Kitoblarni ijaraga berish imkoniyati
-              </label>
-            </div>
+              </div>
 
-            <div className="form-group">
-              <label htmlFor="latitude">Latitude</label>
-              <input
-                type="text"
-                id="latitude"
-                name="latitude"
-                value={formData.library.latitude}
-                onChange={handleLibraryInputChange}
-                placeholder="41.123456"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="longitude">Longitude</label>
-              <input
-                type="text"
-                id="longitude"
-                name="longitude"
-                value={formData.library.longitude}
-                onChange={handleLibraryInputChange}
-                placeholder="69.123456"
-              />
+              <div className="form-group">
+                <label>Longitude:</label>
+                <input
+                  type="text"
+                  value={registerData.longitude}
+                  readOnly
+                  className="readonly-input"
+                />
+              </div>
             </div>
           </div>
+        </div>
 
-          <div className="form-section">
-            <h2>Ijtimoiy tarmoqlar (ixtiyoriy)</h2>
-            <div className="form-group">
-              <label htmlFor="social_website">Vebsayt</label>
-              <input
-                type="url"
-                id="social_website"
-                name="social_website"
-                value={formData.library.social_media?.website || ''}
-                onChange={handleLibraryInputChange}
-                placeholder="https://example.com"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="social_facebook">Facebook</label>
-              <input
-                type="url"
-                id="social_facebook"
-                name="social_facebook"
-                value={formData.library.social_media?.facebook || ''}
-                onChange={handleLibraryInputChange}
-                placeholder="https://facebook.com/username"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="social_instagram">Instagram</label>
-              <input
-                type="url"
-                id="social_instagram"
-                name="social_instagram"
-                value={formData.library.social_media?.instagram || ''}
-                onChange={handleLibraryInputChange}
-                placeholder="https://instagram.com/username"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="social_telegram">Telegram</label>
-              <input
-                type="url"
-                id="social_telegram"
-                name="social_telegram"
-                value={formData.library.social_media?.telegram || ''}
-                onChange={handleLibraryInputChange}
-                placeholder="https://t.me/username"
-              />
-            </div>
+        <div className="form-section">
+          <div className="section-header">
+            <h2>Ijtimoiy tarmoqlar</h2>
+            <button type="button" className="add-platform-btn" onClick={addSocialMedia}>
+              + Qo'shish
+            </button>
           </div>
 
-          <button type="submit" className="submit-button">
+          {registerData.socialMedia.map((social, index) => (
+            <div key={index} className="social-media-row">
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Platforma</label>
+                  <input
+                    type="text"
+                    value={social.platform}
+                    onChange={(e) => handleSocialMediaChange(index, 'platform', e.target.value)}
+                    placeholder="masalan: telegram"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>URL</label>
+                  <input
+                    type="text"
+                    value={social.url}
+                    onChange={(e) => handleSocialMediaChange(index, 'url', e.target.value)}
+                    placeholder="masalan: t.me/username"
+                  />
+                </div>
+
+                {index > 0 && (
+                  <button
+                    type="button"
+                    className="remove-btn"
+                    onClick={() => removeSocialMedia(index)}
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="form-actions">
+          <button type="button" className="cancel-btn" onClick={() => navigate('/login')}>
+            Bekor qilish
+          </button>
+          <button type="submit" className="submit-btn">
             Ro'yxatdan o'tish
           </button>
-        </form>
-
-        <div className="login-link">
-          <p>Akkauntingiz bormi? <a href="/login">Kirish</a></p>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

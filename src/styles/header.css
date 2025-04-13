@@ -1,19 +1,30 @@
 .header {
-  background: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1rem 0;
+  padding: 20px 40px;
   position: sticky;
   top: 0;
   z-index: 1000;
+  background: rgba(0, 0, 0, 1);
 }
 
 .header-content {
-  max-width: 1200px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 0 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.icon {
+  font-size: 34px;
+  color: darkcyan;
 }
 
 .logo a {
@@ -22,9 +33,9 @@
 }
 
 .logo h1 {
-  font-size: 1.5rem;
+  font-size: 30px;
   font-weight: 600;
-  margin: 0;
+  color: darkcyan;
 }
 
 .nav-links {
@@ -34,13 +45,32 @@
 
 .nav-links a {
   text-decoration: none;
-  color: #666;
-  font-weight: 500;
+  color: #f0f0f0;
+
+  font-size: 20px;
+  font-weight: 400;
   transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
-  color: #007bff;
+  color: darkcyan;
+}
+
+.nav-links a.active {
+  color: darkcyan;
+  font-weight: 600;
+  position: relative;
+}
+
+.nav-links a.active::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: darkcyan;
+  border-radius: 2px;
 }
 
 .auth-buttons {
@@ -58,24 +88,25 @@
 }
 
 .login-btn {
-  color: #007bff;
-  border: 1px solid #007bff;
+  color: darkcyan;
+  border: darkcyan 1px solid;
+  font-style: italic;
 }
 
 .login-btn:hover {
-  background: #007bff;
+  background: darkcyan;
   color: white;
 }
 
 .register-btn {
-  background: #28a745;
-  color: white;
-  border: 1px solid #28a745;
+  color: darkcyan;
+  border: darkcyan 1px solid;
+  font-style: italic;
 }
 
 .register-btn:hover {
-  background: #218838;
-  border-color: #218838;
+  background-color: darkcyan;
+  color: white;
 }
 
 @media (max-width: 768px) {

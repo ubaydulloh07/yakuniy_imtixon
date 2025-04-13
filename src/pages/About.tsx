@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-
-interface Developer {
-  id: number;
-  name: string;
-  role: string;
-  image: string;
-  description: string;
-}
+import '../styles/about.css';
 
 interface FAQ {
   id: number;
@@ -14,64 +7,63 @@ interface FAQ {
   answer: string;
 }
 
+interface Developer {
+  id: number;
+  name: string;
+  role: string;
+  description: string;
+  image: string;
+}
+
 const About: React.FC = () => {
-  const [currentDeveloper, setCurrentDeveloper] = useState(0);
   const [activeFAQ, setActiveFAQ] = useState<number | null>(null);
 
   const developers: Developer[] = [
     {
       id: 1,
-      name: "John Doe",
-      role: "Bosh dasturchi",
-      image: "https://via.placeholder.com/150",
-      description: "10 yillik tajribaga ega full-stack dasturchi. React, Node.js va Python bo'yicha mutaxassis."
+      name: "Ubaydulloh_Mirzaaxmadov",
+      role: "Frontend Developer",
+      description: "React , Next.js va TypeScript bilan ishlash tajribasiga ega. Zamonaviy web ilovalar yaratish bo'yicha mutaxassis.",
+      image: "./user.png"
     },
     {
       id: 2,
-      name: "Jane Smith",
-      role: "UI/UX dizayner",
-      image: "https://via.placeholder.com/150",
-      description: "Zamonaviy va foydalanuvchi uchun qulay interfeyslar yaratish bo'yicha mutaxassis."
+      name: "Backendchini tanimima",
+      role: "Backend Developer",
+      description: "Node.js va PostgreSQL bilan ishlovchi tajribali dasturchi. API va ma'lumotlar bazasi arxitekturasi bo'yicha mutaxassis.",
+      image: "./backend.png"
     },
     {
       id: 3,
-      name: "Mike Johnson",
-      role: "Backend dasturchi",
-      image: "https://via.placeholder.com/150",
-      description: "Ma'lumotlar bazasi va server tomoni dasturlash bo'yicha mutaxassis."
+      name: "Ubaydulloh_Mirzaaxmadov",
+      role: "UI/UX Designer",
+      description: "Foydalanuvchi interfeyslarini loyihalash va prototiplash bo'yicha tajribali dizayner.",
+      image: "./user.png"
     }
   ];
 
   const faqs: FAQ[] = [
     {
       id: 1,
-      question: "Kutubxona tizimidan qanday foydalanish mumkin?",
-      answer: "Tizimdan foydalanish uchun avval ro'yxatdan o'tishingiz kerak. Ro'yxatdan o'tgandan so'ng, kitoblar ro'yxatini ko'rib chiqishingiz, qidirish yoki kitob bron qilishingiz mumkin."
+      question: "Kutubxonachi sifatida qanday ro'yxatdan o'tish mumkin?",
+      answer: "Kutubxonachi sifatida ro'yxatdan o'tish uchun saytning yuqori qismidagi 'Kutubxonachi bo'lish' tugmasini bosing va kerakli ma'lumotlarni kiriting. So'ng admin tasdig'ini kuting."
     },
     {
       id: 2,
-      question: "Kitobni qancha muddatga olish mumkin?",
-      answer: "Kitobni odatda 2 haftaga olish mumkin. Agar kerak bo'lsa, muddatni uzaytirish imkoniyati ham mavjud."
+      question: "Kutubxonaga kitob qo'shish mumkinmi?",
+      answer: "Ha, kutubxonachi sifatida tizimga kirgandan so'ng, o'z kutubxonangizga yangi kitoblar qo'shishingiz mumkin."
     },
     {
       id: 3,
-      question: "Kitobni qaytarish muddati o'tib ketganda nima bo'ladi?",
-      answer: "Kitobni o'z vaqtida qaytarmasangiz, har bir kun uchun ma'lum miqdorda jarima to'lashingiz kerak bo'ladi."
+      question: "Kitob qidirish qanday amalga oshiriladi?",
+      answer: "Bosh sahifadagi qidiruv maydoniga kitob nomi yoki muallifini kiriting. Tizim avtomatik ravishda mos keluvchi kitoblarni ko'rsatadi."
     },
     {
       id: 4,
-      question: "Elektron kitoblarni o'qish mumkinmi?",
-      answer: "Ha, bizning tizimda elektron kitoblarni o'qish imkoniyati mavjud. Buning uchun maxsus o'quvchi dastur yoki brauzer kerak bo'ladi."
+      question: "Kutubxona manzilini qanday topish mumkin?",
+      answer: "Kutubxonalar ro'yxatidan kerakli kutubxonani tanlab, uning sahifasiga o'ting. U yerda kutubxonaning to'liq manzili va xaritadagi joylashuvi ko'rsatilgan."
     }
   ];
-
-  const nextDeveloper = () => {
-    setCurrentDeveloper((prev) => (prev + 1) % developers.length);
-  };
-
-  const prevDeveloper = () => {
-    setCurrentDeveloper((prev) => (prev - 1 + developers.length) % developers.length);
-  };
 
   const toggleFAQ = (id: number) => {
     setActiveFAQ(activeFAQ === id ? null : id);
@@ -79,61 +71,80 @@ const About: React.FC = () => {
 
   return (
     <div className="about-page">
-      <div className="about-header">
-        <h1>Biz haqimizda</h1>
-        <p>Bu loyiha kutubxona boshqaruv tizimini zamonaviy va qulay qilish maqsadida yaratilgan.</p>
-      </div>
-
-      <div className="developers-section">
-        <h2>Jamoa a'zolari</h2>
-        <div className="carousel">
-          <button className="carousel-button prev" onClick={prevDeveloper}>
-            &lt;
-          </button>
-          <div className="carousel-content">
-            <div className="developer-card">
-              <img src={developers[currentDeveloper].image} alt={developers[currentDeveloper].name} />
-              <h3>{developers[currentDeveloper].name}</h3>
-              <p className="role">{developers[currentDeveloper].role}</p>
-              <p className="description">{developers[currentDeveloper].description}</p>
-            </div>
-          </div>
-          <button className="carousel-button next" onClick={nextDeveloper}>
-            &gt;
-          </button>
+      <section className="mission-values">
+        <div className="mission">
+          <h2>Bizning maqsadimiz</h2>
+          <p>
+            Ezma loyihasining asosiy maqsadi - O'zbekiston aholisiga kutubxona resurslaridan
+            foydalanishni osonlashtirish va kitobxonlikni rivojlantirish. Biz zamonaviy texnologiyalar
+            yordamida an'anaviy kutubxonalarni yanada qulay va foydalanuvchilarga yaqinroq
+            qilishga harakat qilmoqdamiz.
+          </p>
+          <p>
+            Bizning tizim orqali har bir kishi o'ziga kerakli kitobni qaysi kutubxonada borligini va eng
+            yaqin kutubxonani topishi mumkin. Bu esa vaqtni tejash va kitobxonlikni rag'batlantirish
+            imkonini beradi.
+          </p>
         </div>
-        <div className="carousel-indicators">
-          {developers.map((_, index) => (
-            <button
-              key={index}
-              className={`indicator ${index === currentDeveloper ? 'active' : ''}`}
-              onClick={() => setCurrentDeveloper(index)}
-            />
+
+        <div className="values">
+          <h2>Bizning qadriyatlarimiz</h2>
+          <ul>
+            <li>Innovatsiya - biz doimo yangi g'oyalar va yechimlar izlaymiz</li>
+            <li>Foydalanuvchi tajribasi - bizning asosiy e'tiborimiz foydalanuvchilar ehtiyojlariga qaratilgan</li>
+            <li>Hamkorlik - biz kutubxonalar va foydalanuvchilar bilan yaqin hamkorlikda ishlaymiz</li>
+            <li>Ochiqlik - biz ochiq ma'lumotlar va ochiq kodli yechimlarni qo'llab-quvvatlaymiz</li>
+          </ul>
+        </div>
+      </section>
+
+      <section className="about-section">
+        <h1>Biz haqimizda</h1>
+        <p className="about-description">
+          Ezma Library - bu zamonaviy kutubxona tizimi bo'lib, u kutubxonalar va kitobxonlar o'rtasidagi aloqani 
+          yangi bosqichga olib chiqadi. Bizning maqsadimiz - kitob o'qishni yanada qulayroq va zamonaviyroq qilish.
+        </p>
+      </section>
+
+      <section className="developers-section">
+        <h2>Bizning jamoa</h2>
+        <div className="developers-grid">
+          {developers.map(developer => (
+            <div key={developer.id} className="developer-card">
+              <div className="developer-image">
+                <img src={developer.image} alt={developer.name} />
+              </div>
+              <div className="developer-info">
+                <h3>{developer.name}</h3>
+                <p className="developer-role">{developer.role}</p>
+                <p className="developer-description">{developer.description}</p>
+              </div>
+            </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      <div className="faq-section">
-        <h2>Tez-tez beriladigan savollar</h2>
+      <section className="faq-section">
+        <h2>Ko'p so'raladigan savollar</h2>
         <div className="faq-list">
-          {faqs.map((faq) => (
+          {faqs.map(faq => (
             <div key={faq.id} className="faq-item">
               <button
-                className="faq-question"
+                className={`faq-question ${activeFAQ === faq.id ? 'active' : ''}`}
                 onClick={() => toggleFAQ(faq.id)}
               >
                 {faq.question}
-                <span className={`arrow ${activeFAQ === faq.id ? 'active' : ''}`}>▼</span>
+                <span className="faq-icon">{activeFAQ === faq.id ? '−' : '+'}</span>
               </button>
               {activeFAQ === faq.id && (
                 <div className="faq-answer">
-                  <p>{faq.answer}</p>
+                  {faq.answer}
                 </div>
               )}
             </div>
           ))}
         </div>
-      </div>
+      </section>
     </div>
   );
 };

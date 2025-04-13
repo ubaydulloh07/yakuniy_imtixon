@@ -1,162 +1,249 @@
 .register-page {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f8f9fa;
+  max-width: 1500px;
+  margin: 0 auto;
   padding: 2rem;
 }
 
-.register-container {
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 600px;
+h1 {
+  font-size: 2.5rem;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
 }
 
-.register-container h1 {
-  text-align: center;
-  font-size: 1.8rem;
-  color: #333;
+.subtitle {
+  color: #666;
+  font-size: 1.1rem;
   margin-bottom: 2rem;
 }
 
-.register-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+.form-section {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-section h2 {
+  font-size: 1.5rem;
+  color: #1a1a1a;
+  margin-bottom: 1.5rem;
 }
 
 .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
-.form-group label {
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+label {
+  display: block;
+  color: #4a4a4a;
+  margin-bottom: 0.5rem;
   font-weight: 500;
-  color: #333;
 }
 
-.form-group input {
-  padding: 0.75rem;
+input[type="text"],
+input[type="password"],
+input[type="tel"] {
+  width: 100%;
+  padding: 12px;
   border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-}
-
-.social-media-section,
-.location-section {
-  margin-top: 1rem;
-  padding: 1.5rem;
-  background: #f8f9fa;
   border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
 }
 
-.social-media-section h3,
-.location-section h3 {
-  font-size: 1.2rem;
-  color: #333;
-  margin-bottom: 1rem;
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="tel"]:focus {
+  outline: none;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
 }
 
-.checkbox-label {
+.checkbox {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
   cursor: pointer;
 }
 
-.checkbox-label input[type="checkbox"] {
-  width: 1.2rem;
-  height: 1.2rem;
+.checkbox label {
+  margin-bottom: 0;
   cursor: pointer;
 }
 
-.register-button {
-  background: #28a745;
+/* Location Section */
+.search-box {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.search-box input {
+  flex: 1;
+}
+
+.search-btn {
+  padding: 12px 24px;
+  background-color: #001f3f;
   color: white;
   border: none;
-  padding: 0.75rem;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-weight: 500;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 1rem;
+  transition: all 0.3s ease;
 }
 
-.register-button:hover {
-  background: #218838;
+.search-btn:hover {
+  opacity: 0.8;
 }
 
-.error-message {
-  background: #f8d7da;
-  color: #721c24;
-  padding: 1rem;
+.map-container {
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.location-details {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.readonly-input {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+/* Social Media Section */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.add-platform-btn {
+  padding: 8px 16px;
+  background-color: #001f3f;
+  color: white;
+  border: none;
   border-radius: 6px;
-  margin-bottom: 1rem;
-  text-align: center;
-  animation: fadeIn 0.3s ease;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 18px;
 }
 
-.success-message {
-  background: #d4edda;
-  color: #155724;
-  padding: 1rem;
-  border-radius: 6px;
-  margin-bottom: 1rem;
-  text-align: center;
-  animation: fadeIn 0.3s ease;
+.add-platform-btn:hover {
+  opacity: 0.8;
 }
 
-.login-link {
-  text-align: center;
-  margin-top: 1.5rem;
-  color: #666;
+.social-media-row {
+  position: relative;
+  margin-bottom: 1.5rem;
 }
 
-.login-link a {
-  color: #007bff;
-  text-decoration: none;
-  font-weight: 500;
+.remove-btn {
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: -40px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
-.login-link a:hover {
-  text-decoration: underline;
+.remove-btn svg {
+  width: 30px;
+  height: 30px;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.remove-btn:hover {
+  color: #c82333;
 }
 
-@media (max-width: 480px) {
+/* Form Actions */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.cancel-btn {
+  padding: 12px 24px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  color: #4a4a4a;
+}
+
+.cancel-btn:hover {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.submit-btn {
+  padding: 12px 24px;
+  background-color: #001f3f !important;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.submit-btn:hover {
+  background-color: #0b5ed7;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .register-page {
     padding: 1rem;
   }
 
-  .register-container {
+  .form-section {
     padding: 1.5rem;
   }
 
-  .social-media-section,
-  .location-section {
-    padding: 1rem;
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+
+  .remove-btn {
+    position: static;
+    transform: none;
   }
 }

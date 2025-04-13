@@ -3,9 +3,3 @@
   display: flex;
   flex-direction: column;
 }
-
-.main-content {
-  flex: 1;
-  padding-top: 5rem; /* Header height + some space */
-  padding-bottom: 2rem;
-}
