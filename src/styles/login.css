@@ -10,7 +10,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #001f3f 30%, darkcyan 60%);
+  background: linear-gradient(135deg, #001f3f 50%, darkcyan 90%);
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -61,7 +61,8 @@
   padding: 16px;
   border: none;
   border-radius: 8px;
-
+  background: transparent !important;
+  color: white;
   font-size: 18px;
   box-sizing: border-box;
 }
@@ -100,7 +101,8 @@
   padding: 16px;
   border: none;
   border-radius: 8px;
-  background: linear-gradient(135deg, darkcyan 40%, #001f3f 60%);
+  background-color: transparent;
+  border: 1px solid white;
   color: white;
   font-size: 16px;
   font-weight: 500;
@@ -114,7 +116,7 @@
   border: none;
   border-radius: 8px;
   color: white;
-  background: linear-gradient(135deg, darkcyan 40%, #001f3f 60%);
+  border: 1px solid white;
   text-decoration: none;
   margin-top: 16px;
   display: block;
@@ -123,13 +125,18 @@
 }
 
 .error-message {
-  background: #f8d7da;
-  color: #721c24;
-  padding: 1rem;
-  border-radius: 6px;
-  margin-bottom: 1rem;
+  background-color: rgba(255, 0, 0, 0.1);
+  color: #ff3b30;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
   text-align: center;
-  animation: fadeIn 0.3s ease;
+}
+
+.login-form button[type="submit"]:disabled {
+  background-color: rgba(0, 123, 255, 0.5);
+  cursor: not-allowed;
 }
 
 .register-link {

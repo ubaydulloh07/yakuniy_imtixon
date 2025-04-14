@@ -1,86 +1,144 @@
-.library-list {
-  max-width: 1500px;
+.library-list-container {
+  padding: 50px 110px;
   margin: 0 auto;
-  padding: 2rem;
+  background: linear-gradient(135deg, #fff 50%, darkcyan 40%);
+}
+
+.library-list-header {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 2rem;
+}
+
+.library-list-header h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.search-box {
+  position: relative;
+  max-width: 600px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3rem;
+  border: none;
+  border-radius: 12px;
+  background-color: #f5f5f5;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: black !important;
+  font-size: 1.2rem;
 }
 
 .libraries-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-
-  gap: 4rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
 }
 
 .library-card {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  background-color: white;
-  border: 1px solid black;
-  border-radius: 8px;
-  padding: 1.5rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  height: 600px;
-}
-
-.library-card img {
-  width: 100%;
-  border-radius: 10px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+  color: inherit;
 }
 
 .library-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
 }
 
-.library-card h2 {
-  color: #1890ff;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+.library-image {
+  height: 200px;
+  overflow: hidden;
 }
 
-.library-card p {
-  color: #666;
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-}
-
-.library-card .view-details {
-  display: inline-block;
-  padding: 0.5rem 1.5rem;
-  background: #1890ff;
-  color: white;
-  border-radius: 4px;
-  text-decoration: none;
-  transition: background 0.2s ease;
+.library-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .library-info {
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  margin-top: 20px;
-  gap: 15px;
-  width: 300px;
-  height: 300px;
+  padding: 1.5rem;
 }
 
-.library-card .view-details:hover {
-  background: #40a9ff;
+.library-info h2 {
+  font-size: 1.25rem;
+  color: #333;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.library-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.library-details p {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.library-details svg {
+  color: #007bff;
+}
+
+.location {
+  grid-column: 1 / -1;
+}
+
+.rating {
+  color: #f59e0b !important;
+}
+
+.rating svg {
+  color: #f59e0b !important;
 }
 
 @media (max-width: 768px) {
-  .library-list {
+  .library-list-container {
     padding: 1rem;
   }
 
   .libraries-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
   }
 
-  .library-card {
-    padding: 1rem;
+  .library-list-header h1 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .library-details {
+    grid-template-columns: 1fr;
+  }
+
+  .location {
+    grid-column: auto;
   }
 }

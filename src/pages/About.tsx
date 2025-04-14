@@ -71,6 +71,14 @@ const About: React.FC = () => {
 
   return (
     <div className="about-page">
+      <section className="about-section">
+        <h1>Biz haqimizda</h1>
+        <p className="about-description">
+          Ezma Library - bu zamonaviy kutubxona tizimi bo'lib, u kutubxonalar va kitobxonlar o'rtasidagi aloqani 
+          yangi bosqichga olib chiqadi. Bizning maqsadimiz - kitob o'qishni yanada qulayroq va zamonaviyroq qilish.
+        </p>
+      </section>
+
       <section className="mission-values">
         <div className="mission">
           <h2>Bizning maqsadimiz</h2>
@@ -96,14 +104,6 @@ const About: React.FC = () => {
             <li>Ochiqlik - biz ochiq ma'lumotlar va ochiq kodli yechimlarni qo'llab-quvvatlaymiz</li>
           </ul>
         </div>
-      </section>
-
-      <section className="about-section">
-        <h1>Biz haqimizda</h1>
-        <p className="about-description">
-          Ezma Library - bu zamonaviy kutubxona tizimi bo'lib, u kutubxonalar va kitobxonlar o'rtasidagi aloqani 
-          yangi bosqichga olib chiqadi. Bizning maqsadimiz - kitob o'qishni yanada qulayroq va zamonaviyroq qilish.
-        </p>
       </section>
 
       <section className="developers-section">

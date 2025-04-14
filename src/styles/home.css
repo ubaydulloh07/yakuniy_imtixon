@@ -59,18 +59,21 @@
 .search-icon {
   position: absolute;
   left: 16px;
-  color: white;
+  color: white !important ;
+  z-index: 111;
   font-size: 1.2rem;
 }
 
 .search-input {
   width: 100%;
-  background-color: transparent !important;
   padding: 16px 16px 16px 48px !important;
   font-size: 1rem;
   border: none;
   border-radius: 8px;
+  background-color: transparent;
   color: white;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .search-input::placeholder {
@@ -88,6 +91,8 @@
   cursor: pointer;
   transition: background-color 0.2s;
   border: 1px solid white;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .search-button:hover {
@@ -219,7 +224,7 @@
   max-width: 1500px !important;
   margin: 0 auto !important;
   display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)) !important;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
   gap: 2rem;
 }
 
@@ -272,16 +277,17 @@
 
 .book-info {
   padding: 1.5rem;
+  background: linear-gradient(135deg, #001f3f 50%, darkcyan 90%);
 }
 
 .book-info h3 {
   font-size: 1.2rem;
-  color: #333;
+  color: white !important;
   margin-bottom: 0.5rem;
 }
 
 .book-info p {
-  color: #666;
+  color: #999;
   margin-bottom: 1rem;
 }
 

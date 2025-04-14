@@ -55,7 +55,7 @@ interface ProfileResponse {
 }
 
 export const registerLibrary = async (data: RegisterLibraryData) => {
-  const response = await fetch(`${BASE_URL}/auth/register-library`, {
+  const response = await fetch(`${BASE_URL}/auth/register-library/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -92,12 +92,6 @@ export const login = async (data: LoginData): Promise<LoginResponse> => {
 
   const responseData = await response.json();
 
-  if (!responseData.user.is_active) {
-    throw new Error(
-      "Sizning akkauntingiz hali admin tomonidan tasdiqlanmagan. Iltimos, tasdiqlash jarayoni tugashini kuting."
-    );
-  }
-
   // Save token to localStorage
   localStorage.setItem("token", responseData.access_token);
   localStorage.setItem("user", JSON.stringify(responseData.user));
@@ -111,7 +105,7 @@ export const getProfile = async (): Promise<ProfileResponse> => {
     throw new Error("Token topilmadi");
   }
 
-  const response = await fetch(`${BASE_URL}/auth/profile`, {
+  const response = await fetch(`${BASE_URL}/auth/profile/`, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",

@@ -1,44 +1,39 @@
 .library-detail-page {
-  max-width: 1200px;
+  padding: 50px;
   margin: 0 auto;
-  padding: 2rem;
-  background-color: #f8f9fa;
   min-height: 100vh;
+  background-color: #001f3f;
 }
 
 .library-header {
   margin-bottom: 2rem;
-  text-align: center;
 }
 
 .library-header h1 {
   font-size: 2.5rem;
-  color: #1a1a1a;
+  color: white;
   margin-top: 1rem;
 }
 
 .back-button {
   position: absolute;
-  left: 20px;
+  left: 50px;
   top: 100px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  background-color: green;
+  background-color: transparent;
+  border: 1px solid white;
   color: white;
-  border: none;
   border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .back-button:hover {
-  background-color: #0b5ed7;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .library-content {
@@ -48,20 +43,21 @@
 
 /* Info Card Styles */
 .library-info-card {
-  background-color: white;
+  background-color: transparent;
+  border: solid 1px white;
   border-radius: 16px;
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .info-section h2 {
-  color: #0d6efd;
+  color: white;
   font-size: 1.8rem;
   margin-bottom: 1rem;
 }
 
 .info-section p {
-  color: #4a4a4a;
+  color: white;
   line-height: 1.6;
   font-size: 1.1rem;
   margin-bottom: 2rem;
@@ -75,11 +71,12 @@
 }
 
 .stat-card {
-  background-color: #f8f9fa;
+  background: linear-gradient(135deg, #001f3f 50%, darkcyan 90%);
   padding: 1.5rem;
   border-radius: 12px;
   text-align: center;
   transition: transform 0.3s ease;
+  border: solid 1px white;
 }
 
 .stat-card:hover {
@@ -87,27 +84,28 @@
 }
 
 .stat-card h3 {
-  color: #6c757d;
+  color: white;
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
 }
 
 .stat-card span {
-  color: #0d6efd;
+  color: white;
   font-size: 2rem;
   font-weight: bold;
 }
 
 /* Location Card Styles */
 .location-card {
-  background-color: white;
+  background: linear-gradient(135deg, #001f3f 40%, darkcyan 90%);
   border-radius: 16px;
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: solid 1px white;
 }
 
 .location-card h2 {
-  color: #0d6efd;
+  color: darkcyan;
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
 }
@@ -127,30 +125,30 @@
 .address-details p {
   margin-bottom: 1rem;
   font-size: 20px;
-  color: #4a4a4a;
+  color: white;
   line-height: 1.6;
 }
 
 .address-details strong {
-  color: #1a1a1a;
+  color: darkcyan;
 }
 
 .map-container {
+  border: solid 1px white;
+  padding: 20px;
   border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Books Section Styles */
 .books-section {
-  background-color: white;
+  background-color: transparent;
   border-radius: 16px;
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .books-section h2 {
-  color: #0d6efd;
+  color: darkcyan;
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
 }
@@ -163,7 +161,7 @@
 }
 
 .book-card {
-  background-color: white;
+  background-color: transparent;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -211,12 +209,12 @@
 
 .book-info h3 {
   font-size: 1.2rem;
-  color: #1a1a1a;
+  color: white;
   margin-bottom: 0.5rem;
 }
 
 .book-info .author {
-  color: #6c757d;
+  color: white;
   font-size: 1rem;
   margin-bottom: 1rem;
 }
@@ -230,12 +228,12 @@
 .category,
 .year {
   font-size: 0.9rem;
-  color: #6c757d;
+  color: white;
 }
 
 .isbn {
   font-size: 0.9rem;
-  color: #6c757d;
+  color: white;
 }
 
 /* Pagination Styles */
@@ -249,7 +247,8 @@
 
 .pagination-btn {
   padding: 8px 16px;
-  background-color: #0d6efd;
+  background-color: transparent;
+  border: solid 1px white;
   color: white;
   border: none;
   border-radius: 6px;
@@ -331,9 +330,9 @@
 
 .add-book-btn {
   padding: 10px 20px;
-  background-color: #28a745;
+  background-color: transparent;
+  border: solid 1px white;
   color: white;
-  border: none;
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
@@ -344,7 +343,6 @@
 }
 
 .add-book-btn:hover {
-  background-color: #218838;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

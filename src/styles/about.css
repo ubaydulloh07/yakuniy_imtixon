@@ -1,26 +1,98 @@
 .about-page {
-  max-width: 1500px;
+  padding: 50px 110px;
   margin: 0 auto;
-  padding: 2rem;
+  background: linear-gradient(270deg, #001f3f 50%, darkcyan 50%);
 }
 
 .about-section {
   text-align: center;
   margin-bottom: 4rem;
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #001f3f 40%, darkcyan 60%);
+  border-radius: 20px;
+  color: white;
 }
 
 .about-section h1 {
-  font-size: 2.5rem;
-  color: #2c3e50;
+  font-size: 3rem;
+  color: white;
   margin-bottom: 1.5rem;
+  font-weight: 600;
 }
 
 .about-description {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: #555;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
   max-width: 800px;
   margin: 0 auto;
+}
+
+.mission-values {
+  max-width: 1500px;
+  margin: 0 auto 4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+}
+
+.mission {
+  padding: 2rem;
+  background: #001f3f;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+.values {
+  padding: 2rem;
+  background: darkcyan;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.mission:hover,
+.values:hover {
+  transform: translateY(-5px);
+}
+
+.mission h2,
+.values h2 {
+  font-size: 2rem;
+  color: white;
+  margin-bottom: 1.5rem;
+}
+
+.mission p {
+  color: #999;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.values ul {
+  list-style: none;
+  padding: 0;
+}
+
+.values li {
+  color: #999;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  position: relative;
+  padding-left: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.values li::before {
+  content: "•";
+  color: #0a1172;
+  font-size: 1.5rem;
+  position: absolute;
+  left: 0;
+  top: -2px;
 }
 
 .developers-section {
@@ -30,7 +102,7 @@
 .developers-section h2 {
   text-align: center;
   font-size: 2rem;
-  color: #2c3e50;
+  color: white;
   margin-bottom: 2rem;
 }
 
@@ -42,9 +114,9 @@
 }
 
 .developer-card {
-  background: white;
+  background: transparent;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 1);
   overflow: hidden;
   transition: transform 0.3s ease;
 }
@@ -55,7 +127,7 @@
 
 .developer-image {
   width: 100%;
-  height: 200px;
+  height: 300px;
   overflow: hidden;
 }
 
@@ -71,39 +143,39 @@
 
 .developer-info h3 {
   font-size: 1.5rem;
-  color: #2c3e50;
+  color: white;
   margin-bottom: 0.5rem;
 }
 
 .developer-role {
-  color: #3498db;
+  color: darkgoldenrod;
   font-weight: 500;
   margin-bottom: 1rem;
 }
 
 .developer-description {
-  color: #666;
+  color: #999;
   line-height: 1.5;
 }
 
 .faq-section {
   margin-bottom: 4rem;
   max-width: 1500px;
-  background-color: white;
-  padding: 25px;
-  box-shadow: #333 0px 0px 5px;
+  background-color: transparent;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 1);
   border-radius: 20px;
 }
 
 .faq-section h2 {
   text-align: center;
   font-size: 2rem;
-  color: #2c3e50;
+  color: white;
   margin-bottom: 2rem;
 }
 
 .faq-list {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
@@ -115,25 +187,22 @@
   width: 100%;
   text-align: left;
   padding: 1rem;
-  background: white;
-  border: none;
+  background: transparent;
+  border: 1px solid white;
   border-radius: 5px;
   font-size: 1.1rem;
-  color: #2c3e50;
+  color: white;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease;
-}
-
-.faq-question:hover {
-  background-color: #f8f9fa;
+  transition: all 0.3s ease;
 }
 
 .faq-question.active {
   background-color: #e3f2fd;
+  color: black;
 }
 
 .faq-icon {
@@ -151,57 +220,14 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.mission-values {
-  max-width: 1500px;
-  margin: 0 auto 4rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-}
+@media (max-width: 1024px) {
+  .about-section {
+    padding: 3rem 1.5rem;
+  }
 
-.mission,
-.values {
-  padding: 25px;
-  background-color: white;
-  border-radius: 20px;
-  box-shadow: #2c3e50 0px 0px 10px;
-}
-
-.mission h2,
-.values h2 {
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 1.5rem;
-}
-
-.mission p {
-  color: #666;
-  line-height: 1.8;
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-}
-
-.values ul {
-  list-style: none;
-  padding: 0;
-}
-
-.values li {
-  color: #666;
-  line-height: 1.8;
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-  position: relative;
-  padding-left: 1.5rem;
-}
-
-.values li::before {
-  content: "•";
-  color: darkolivegreen;
-  font-size: 1.5rem;
-  position: absolute;
-  left: 0;
-  top: -2px;
+  .about-section h1 {
+    font-size: 2.5rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -209,8 +235,17 @@
     padding: 1rem;
   }
 
+  .about-section {
+    padding: 2rem 1rem;
+  }
+
   .about-section h1 {
     font-size: 2rem;
+  }
+
+  .mission-values {
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
   .developers-grid {
@@ -220,10 +255,23 @@
   .faq-question {
     font-size: 1rem;
   }
+}
 
-  .mission-values {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 0 1rem;
+@media (max-width: 480px) {
+  .about-section {
+    padding: 1.5rem 1rem;
+  }
+
+  .about-section h1 {
+    font-size: 1.8rem;
+  }
+
+  .about-description {
+    font-size: 1rem;
+  }
+
+  .mission,
+  .values {
+    padding: 1.5rem;
   }
 }

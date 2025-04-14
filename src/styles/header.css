@@ -3,7 +3,8 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(0, 0, 0, 1);
+  background-color: #001f3f;
+  border-bottom: #f0f0f0 1px solid;
 }
 
 .header-content {

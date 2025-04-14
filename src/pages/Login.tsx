@@ -1,35 +1,64 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IoBookOutline } from "react-icons/io5";
 import { FiEye, FiEyeOff } from 'react-icons/fi';
+import { login } from '../services/api';
 import '../styles/login.css';
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
+  const navigate = useNavigate();
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
+    setError(null);
+    setLoading(true);
+
+    try {
+      const response = await login({ phone, password });
+      
+      // Tokenni saqlash
+      localStorage.setItem('token', response.access_token);
+      localStorage.setItem('user', JSON.stringify(response.user));
+
+      // Agar foydalanuvchi aktiv bo'lmasa
+    
+
+      // Muvaffaqiyatli login bo'lganda libraries sahifasiga yo'naltirish
+      navigate('/libraries');
+    } catch (err) {
+      if (err instanceof Error) {
+        // API dan kelgan xatoni ko'rsatish
+        setError(err.message || "Login paytida xatolik yuz berdi");
+      } else {
+        setError("Tizimda xatolik yuz berdi. Iltimos qaytadan urinib ko'ring");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="login-container">
       <div className="login-box">
         <div className="login-logo">
-          <h2>EZMA</h2>
           <IoBookOutline />
+          <h2>EZMA</h2>
         </div>
-        <h1>Kutubxonaga kirish</h1>
+        <h1>Library Login</h1>
+        
+        {error && <div className="error-message">{error}</div>}
         
         <form className="login-form" onSubmit={handleSubmit}>
-          <input 
-          className='login-input'
-            type="number"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+          <input
+            type="tel"
+            placeholder="+998901234567"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
             required
           />
           
@@ -50,12 +79,17 @@ const Login: React.FC = () => {
             </button>
           </div>
           
-          <button type="submit">Kirish</button>
+          <button 
+            type="submit" 
+            disabled={loading}
+          >
+            {loading ? "Kirish..." : "Log In"}
+          </button>
         </form>
-        <Link to="/librarian/register" className="signup-link">
-          Register
-        </Link>
         
+        <Link to="/librarian/register" className="signup-link">
+          Sign Up
+        </Link>
       </div>
     </div>
   );
