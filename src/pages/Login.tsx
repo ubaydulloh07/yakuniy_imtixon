@@ -5,7 +5,11 @@ import { FiEye, FiEyeOff } from 'react-icons/fi';
 import '../styles/login.css';
 import { login } from '../services/API';
 
-const Login: React.FC = () => {
+interface LoginProps {
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>; // setIsLoggedIn ni props sifatida olish
+}
+
+const Login: React.FC<LoginProps> = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
@@ -25,11 +29,11 @@ const Login: React.FC = () => {
       localStorage.setItem('token', response.access);
       localStorage.setItem('user', JSON.stringify(response.user));
 
-      // Agar foydalanuvchi aktiv bo'lmasa
-    
+      // setIsLoggedIn ni chaqirish
+      setIsLoggedIn(true);
 
-      // Muvaffaqiyatli login bo'lganda libraries sahifasiga yo'naltirish
-      navigate('/librarian/profile');
+      // Muvaffaqiyatli login bo'lganda profil sahifasiga yo'naltirish
+      navigate('/profile');
     } catch (err) {
       if (err instanceof Error) {
         // API dan kelgan xatoni ko'rsatish
@@ -95,4 +99,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login; 
+export default Login;

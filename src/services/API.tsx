@@ -1,9 +1,9 @@
 import axios from "axios";
-import { RegisterLibraryData, ProfileResponse , LoginData } from "../types/type";
-
+import { RegisterLibraryData, ProfileResponse, LoginData } from "../types/type";
 
 const BASE_URL = "https://s-libraries.uz/api/v1";
 
+// Kutubxona ro'yxatga olish
 export const registerLibrary = async (data: RegisterLibraryData) => {
   const response = await fetch(`${BASE_URL}/auth/register-library/`, {
     method: "POST",
@@ -25,11 +25,10 @@ export const registerLibrary = async (data: RegisterLibraryData) => {
 };
 
 // Login function
-
 export const login = async ({ phone, password }: LoginData) => {
   try {
-    const response = await  axios.post(`${BASE_URL}/auth/login/`, { phone, password });
-   
+    const response = await axios.post(`${BASE_URL}/auth/login/`, { phone, password });
+
     if (response.status !== 200 && response.status !== 201) {
       throw new Error("Login muvaffaqiyatsiz tugadi!");
     }
@@ -41,15 +40,12 @@ export const login = async ({ phone, password }: LoginData) => {
   }
 };
 
-///  login addd
-
+// Profilni olish
 export const getProfile = async (): Promise<ProfileResponse> => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("Token topilmadi");
   }
-
-  // Fetch profile data
 
   const response = await fetch(`${BASE_URL}/auth/profile/`, {
     headers: {
@@ -57,6 +53,11 @@ export const getProfile = async (): Promise<ProfileResponse> => {
       "Content-Type": "application/json",
     },
   });
+
+  if (response.status === 401) {
+    localStorage.removeItem("token");
+    throw new Error("Token muddati tugagan. Qayta login qiling.");
+  }
 
   if (!response.ok) {
     const errorData = await response.json();
@@ -68,8 +69,7 @@ export const getProfile = async (): Promise<ProfileResponse> => {
   return response.json();
 };
 
-// kutubxona  kitoblar 
-
+// Kutubxonalar ro'yxatini olish
 export const getLibraries = async () => {
   try {
     const res = await axios.get(`${BASE_URL}/libraries/libraries/`);
@@ -80,9 +80,7 @@ export const getLibraries = async () => {
   }
 };
 
-// kutubxona  kitoblar  id  bo'yicha detail olish
-
-
+// Kutubxona kitoblar detallarini olish
 export const getLibraryDetail = async (id: string) => {
   const res = await fetch(`https://s-libraries.uz/api/v1/libraries/library/${id}/`, {
     method: 'GET',
@@ -99,18 +97,46 @@ export const getLibraryDetail = async (id: string) => {
   return data.results;
 };
 
-
-
-
-
-///  search  books
-
-
+// Kitoblarni qidirish
 export const searchBooks = async (query: string) => {
   try {
     const response = await axios.get(`https://s-libraries.uz/api/v1/books/search/book/?q=${encodeURIComponent(query)}`);
     return response.data;
   } catch (error) {
     throw new Error('Kitoblarni qidirishda xatolik yuz berdi.');
+  }
+};
+
+// Logout function
+
+
+
+export const logout = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("Token topilmadi");
+  }
+
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/auth/logout/`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      // Serverdan chiqish muvaffaqiyatli bo'lsa
+      console.log("Foydalanuvchi tizimdan chiqdi");
+      return response.data;
+    } else {
+      throw new Error("Logout so'rovi muvaffaqiyatsiz tugadi");
+    }
+  } catch (error) {
+    throw new Error("Tizimda xatolik yuz berdi. Iltimos qaytadan urinib ko'ring.");
   }
 };

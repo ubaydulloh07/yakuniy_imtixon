@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { getLibraryDetail } from '../services/API';
 import '../styles/libraryDetail.css';
+import { FiMapPin, FiPhone, FiBook, FiMap } from 'react-icons/fi';
 
 const LibraryDetail = () => {
   const { id } = useParams();
@@ -28,21 +29,42 @@ const LibraryDetail = () => {
     <div className="library-detail-container">
       <div className="library-info-box">
         <h1 className="library-title">{state?.name}</h1>
-        <p className="library-address">📍 {library?.address}</p>
-        {phone && <p className="library-phone">📞 {phone}</p>}
+        <p className="library-address">
+          <FiMapPin className="detail-icon" /> {library?.address}
+        </p>
+        {phone && (
+          <p className="library-phone">
+            <FiPhone className="detail-icon" /> {phone}
+          </p>
+        )}
         <p className={`library-status ${is_active ? 'active' : 'inactive'}`}>
           Holati: {is_active ? 'Faol' : 'Faol emas'}
         </p>
-        <p className="library-total">📚 Jami kitoblar: {total_books}</p>
+        <p className="library-total">
+          <FiBook className="detail-icon" /> Jami kitoblar: {total_books}
+        </p>
+
         {library?.google_maps_url && (
-          <a
-            href={library.google_maps_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="library-map-link"
-          >
-            📌 Google Maps orqali ko‘rish
-          </a>
+          <div className="map-container">
+            <p className="map-title">
+              <FiMap className="detail-icon" /> Joylashuv:
+            </p>
+            {/* <iframe
+              src={library.google_maps_url}
+              loading="lazy"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+              className="map-iframe"
+            ></iframe> */}
+             <iframe
+          src="https://maps.google.com/maps?q=Tashkent%2C%20Uzbekistan&output=embed"
+              className='map-iframe'
+            style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+  ></iframe>
+          </div>
         )}
       </div>
 
