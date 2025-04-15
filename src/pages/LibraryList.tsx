@@ -1,55 +1,47 @@
-import React, { useState } from 'react';
+
+import  { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiSearch, FiMapPin, FiBook, FiClock, FiStar } from 'react-icons/fi';
+import { FiSearch, FiMapPin, FiBook, FiAlertCircle } from 'react-icons/fi';
 import '../styles/libraryList.css';
+import { getLibraries } from '../services/API';
+import { motion } from 'framer-motion';
 
 interface Library {
   id: number;
   name: string;
-  location: string;
-  bookCount: number;
-  rating: number;
-  workingHours: string;
-  image: string;
+  image: string | null;
+  address: string;
+  total_books: number;
+  is_active: boolean;
 }
-
-const DUMMY_LIBRARIES: Library[] = [
-  {
-    id: 1,
-    name: "Alisher Navoiy nomidagi kutubxona",
-    location: "Toshkent shahri, Navoiy ko'chasi, 32-uy",
-    bookCount: 50000,
-    rating: 4.8,
-    workingHours: "09:00 - 18:00",
-    image: "https://images.unsplash.com/photo-1568667256549-094345857637?ixlib=rb-4.0.3"
-  },
-  {
-    id: 2,
-    name: "Bobur nomidagi viloyat kutubxonasi",
-    location: "Andijon shahri, Bobur shoh ko'chasi, 15-uy",
-    bookCount: 35000,
-    rating: 4.5,
-    workingHours: "09:00 - 20:00",
-    image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-4.0.3"
-  },
-  {
-    id: 3,
-    name: "Ulug'bek nomidagi ilmiy kutubxona",
-    location: "Samarqand shahri, Registon ko'chasi, 1-uy",
-    bookCount: 45000,
-    rating: 4.9,
-    workingHours: "08:00 - 19:00",
-    image: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3"
-  }
-];
 
 const LibraryList: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [libraries] = useState<Library[]>(DUMMY_LIBRARIES);
+  const [libraries, setLibraries] = useState<Library[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    setLoading(true);
+    setError('');
+
+    const fetchData = async () => {
+      try {
+        const data = await getLibraries();
+        setLibraries(data);
+      } catch (err) {
+        setError("Kutubxonalarni yuklashda xatolik yuz berdi.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const filteredLibraries = libraries.filter(library =>
     library.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    library.location.toLowerCase().includes(searchTerm.toLowerCase())
+    library.address.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -57,44 +49,50 @@ const LibraryList: React.FC = () => {
       <div className="library-list-header">
         <h1>Kutubxonalar</h1>
         <div className="search-box">
-          <FiSearch className="search-icon" />
+          <FiSearch className="search-icon-k" />
           <input
             type="text"
-            placeholder="Kutubxona nomi yoki manzili bo'yicha qidiring..."
+            placeholder="Qidirish..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
       </div>
 
-      <div className="libraries-grid">
-        {filteredLibraries.map(library => (
-          <Link to={`/library/${library.id}`} key={library.id} className="library-card">
-            <div className="library-image">
-              <img src={library.image} alt={library.name} />
-            </div>
-            <div className="library-info">
-              <h2>{library.name}</h2>
-              <div className="library-details">
-                <p className="location">
-                  <FiMapPin /> {library.location}
-                </p>
-                <p className="book-count">
-                  <FiBook /> {library.bookCount.toLocaleString()} ta kitob
-                </p>
-                <p className="working-hours">
-                  <FiClock /> {library.workingHours}
-                </p>
-                <p className="rating">
-                  <FiStar /> {library.rating}
-                </p>
-              </div>
-            </div>
-          </Link>
-        ))}
-      </div>
+      {loading ? (
+        <div className="loader">Yuklanmoqda...</div>
+      ) : error ? (
+        <div className="error-message">
+          <FiAlertCircle /> {error}
+        </div>
+      ) : (
+        <div className="libraries-grid">
+          {filteredLibraries.map(library => (
+            <motion.div
+              key={library.id}
+              className="library-card"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              {/* <Link to={`/library/${library.id}`}> */}
+              <Link to={`/library/${library.id}`} state={{ name: library.name }}>
+
+                <div className="library-image">
+                  <img src={library.image || "https://i.pinimg.com/736x/c5/98/59/c59859449c63060efc95ccd7c6314a4a.jpg"} alt={library.name} />
+                </div>
+                <div className="library-info">
+                  <h2>{library.name}</h2>
+                  <p><FiMapPin /> {library.address}</p>
+                  <p><FiBook /> {library.total_books} ta kitob</p>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
-export default LibraryList; 
+export default LibraryList;

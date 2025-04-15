@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { IoBookOutline } from "react-icons/io5";
 import { FiEye, FiEyeOff } from 'react-icons/fi';
-import { login } from '../services/api';
 import '../styles/login.css';
+import { login } from '../services/API';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -22,14 +22,14 @@ const Login: React.FC = () => {
       const response = await login({ phone, password });
       
       // Tokenni saqlash
-      localStorage.setItem('token', response.access_token);
+      localStorage.setItem('token', response.access);
       localStorage.setItem('user', JSON.stringify(response.user));
 
       // Agar foydalanuvchi aktiv bo'lmasa
     
 
       // Muvaffaqiyatli login bo'lganda libraries sahifasiga yo'naltirish
-      navigate('/libraries');
+      navigate('/librarian/profile');
     } catch (err) {
       if (err instanceof Error) {
         // API dan kelgan xatoni ko'rsatish
@@ -56,7 +56,7 @@ const Login: React.FC = () => {
         <form className="login-form" onSubmit={handleSubmit}>
           <input
             type="tel"
-            placeholder="+998901234567"
+            placeholder="Phone Number"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             required

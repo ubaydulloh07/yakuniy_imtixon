@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import '../styles/header.css';
-import { IoBookOutline } from "react-icons/io5";
+import { GiOpenBook } from "react-icons/gi";
 
 const Header: React.FC = () => {
   const location = useLocation();
@@ -14,10 +14,11 @@ const Header: React.FC = () => {
     <header className="header">
       <div className="header-content">
         <div className="logo">
+        <GiOpenBook className="icon"/>
+        {/* <img width={35} height={35} src="./vite.png" alt="" /> */}
           <Link to="/">
             <h1>EZMA</h1>
           </Link>
-          <IoBookOutline className="icon" />
         </div>
         
         <nav className="nav-links">

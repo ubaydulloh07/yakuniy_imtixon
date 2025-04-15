@@ -2,7 +2,7 @@
   padding: 20px 40px;
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 1111;
   background-color: #001f3f;
   border-bottom: #f0f0f0 1px solid;
 }
@@ -20,12 +20,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
+  gap: 5px;
 }
 
 .icon {
-  font-size: 34px;
-  color: darkcyan;
+  font-size: 37px;
+  color: white;
+  margin-bottom: 8px;
 }
 
 .logo a {
@@ -34,9 +35,10 @@
 }
 
 .logo h1 {
-  font-size: 30px;
-  font-weight: 600;
-  color: darkcyan;
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: white;
 }
 
 .nav-links {
@@ -89,7 +91,7 @@
 }
 
 .login-btn {
-  color: darkcyan;
+  color: white;
   border: darkcyan 1px solid;
   font-style: italic;
 }
@@ -100,7 +102,7 @@
 }
 
 .register-btn {
-  color: darkcyan;
+  color: white;
   border: darkcyan 1px solid;
   font-style: italic;
 }

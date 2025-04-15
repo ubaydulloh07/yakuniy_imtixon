@@ -27,7 +27,7 @@ const App: React.FC = () => {
             <Route path="/librarian/add-book" element={<AddBook />} />
           </Routes>
         </main>
-        <Footer />
+        <Footer /> 
       </div>
     </Router>
   );

@@ -119,7 +119,7 @@ input[type="tel"]:focus {
 }
 
 .location-details {
-  background: #f8f9fa;
+  background: transparent;
   padding: 1.5rem;
   border-radius: 8px;
 }
