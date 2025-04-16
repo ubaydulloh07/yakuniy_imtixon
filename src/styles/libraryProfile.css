@@ -1,68 +1,133 @@
-.library-profile {
-  margin: 0 auto;
-  padding: 30px 100px;
-  background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  font-family: "Arial", sans-serif;
-  color: #333;
+.library-profile-page {
+  padding: 60px 60px;
+  background-color: #f0f8f8;
+  font-family: "Segoe UI", sans-serif;
+  min-height: 100vh;
 }
 
-.library-profile h1 {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: #222;
-}
-
-.profile-info p {
-  font-size: 1.1rem;
-  margin: 0.5rem 0;
-}
-
-.map {
-  margin-top: 1.5rem;
-  border: 2px solid #ccc;
+.profile-header-ss {
+  background-color: darkcyan;
+  color: white;
+  padding: 20px 30px;
   border-radius: 12px;
-  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.map .leaflet-container {
-  width: 100% !important;
-  height: 300px !important;
+.profile-header-ss h1 {
+  font-size: 26px;
+  margin: 0;
+  color: white;
 }
 
-.social-media {
-  margin-top: 2rem;
-}
-
-.social-media h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.social-media ul {
-  list-style: none;
-  padding: 0;
-}
-
-.social-media li {
-  margin: 0.5rem 0;
-}
-
-.social-media a {
-  text-decoration: none;
-  color: #0077cc;
+.profile-header-ss button {
+  border: 1px solid white !important;
+  background-color: transparent;
+  color: white;
   font-weight: 500;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.edit-icon {
+  font-size: 22px;
 }
 
-.social-media a:hover {
+.profile-header-ss button:hover {
+  background-color: white !important  ;
+  color: darkcyan !important;
+}
+
+.profile-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 42px;
+}
+
+.info-side {
+  flex: 1;
+  min-width: 200px;
+  background-color: #ffffff;
+  border-left: 6px solid darkcyan;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.info-side p {
+  font-size: 20px;
+  line-height: 1.6;
+  margin: 0;
+  color: #001f3f;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.info-side a {
+  color: darkcyan;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.info-side a:hover {
   text-decoration: underline;
 }
 
-.loading,
-.error {
+.profile-img img {
+  width: 100%;
+  max-width: 250px;
+  margin-top: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.map-side {
+  flex: 1;
+  min-width: 350px;
+  max-height: 400px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 3px solid darkcyan;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.no-map {
+  background-color: #fff3f3;
+  border: 1px solid #ffcccc;
+  color: #d8000c;
+  padding: 20px;
+  border-radius: 8px;
   text-align: center;
-  font-size: 1.2rem;
-  padding: 2rem;
+  font-weight: 500;
+}
+
+.spin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.error {
+  font-size: 20px;
+  text-align: center;
+  margin-top: 40px;
+  color: darkcyan;
+}
+
+/* Ant Design form moslashuvi */
+.ant-modal-title {
+  color: darkcyan;
+  font-size: 22px;
+}
+
+.ant-form-item-label > label {
+  color: darkcyan !important;
 }

@@ -1,10 +1,10 @@
-
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiSearch, FiMapPin, FiBook, FiAlertCircle } from 'react-icons/fi';
 import '../styles/libraryList.css';
 import { getLibraries } from '../services/API';
 import { motion } from 'framer-motion';
+import { Skeleton } from 'antd';
 
 interface Library {
   id: number;
@@ -60,7 +60,14 @@ const LibraryList: React.FC = () => {
       </div>
 
       {loading ? (
-        <div className="loader">Yuklanmoqda...</div>
+        <div className="libraries-grid">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div className="library-card" key={i}>
+              <Skeleton.Image active style={{ width: '100%', height: 200 }} />
+              <Skeleton active paragraph={{ rows: 2 }} />
+            </div>
+          ))}
+        </div>
       ) : error ? (
         <div className="error-message">
           <FiAlertCircle /> {error}
@@ -75,9 +82,7 @@ const LibraryList: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
             >
-              {/* <Link to={`/library/${library.id}`}> */}
               <Link to={`/library/${library.id}`} state={{ name: library.name }}>
-
                 <div className="library-image">
                   <img src={library.image || "https://i.pinimg.com/736x/c5/98/59/c59859449c63060efc95ccd7c6314a4a.jpg"} alt={library.name} />
                 </div>

@@ -48,6 +48,7 @@ export const getProfile = async (): Promise<ProfileResponse> => {
   }
 
   const response = await fetch(`${BASE_URL}/auth/profile/`, {
+    method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -69,6 +70,31 @@ export const getProfile = async (): Promise<ProfileResponse> => {
   return response.json();
 };
 
+/// profilni yangilash
+
+
+export const updateProfile = async (data: any) => {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("Token topilmadi");
+
+  const response = await fetch(`${BASE_URL}/auth/profile/`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Profilni yangilashda xatolik");
+  }
+
+  return response.json();
+};
+
+
 // Kutubxonalar ro'yxatini olish
 export const getLibraries = async () => {
   try {
@@ -82,7 +108,7 @@ export const getLibraries = async () => {
 
 // Kutubxona kitoblar detallarini olish
 export const getLibraryDetail = async (id: string) => {
-  const res = await fetch(`https://s-libraries.uz/api/v1/libraries/library/${id}/`, {
+  const res = await fetch(`${BASE_URL}/libraries/library/${id}/`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -100,7 +126,7 @@ export const getLibraryDetail = async (id: string) => {
 // Kitoblarni qidirish
 export const searchBooks = async (query: string) => {
   try {
-    const response = await axios.get(`https://s-libraries.uz/api/v1/books/search/book/?q=${encodeURIComponent(query)}`);
+    const response = await axios.get(`${BASE_URL}/books/search/book/?q=${encodeURIComponent(query)}`);
     return response.data;
   } catch (error) {
     throw new Error('Kitoblarni qidirishda xatolik yuz berdi.');
@@ -140,3 +166,4 @@ export const logout = async () => {
     throw new Error("Tizimda xatolik yuz berdi. Iltimos qaytadan urinib ko'ring.");
   }
 };
+

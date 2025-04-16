@@ -1,9 +1,13 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { AiOutlineLogout } from 'react-icons/ai'; // Logout iconi
-import { logout } from '../services/API'; // Import qildik
+import { logout } from '../services/API'; 
 import '../styles/header.css';
 import { GiOpenBook } from "react-icons/gi";
+import { AiOutlineUser } from "react-icons/ai";
+import { IoSettingsOutline } from "react-icons/io5";
+import { LuLogOut } from "react-icons/lu";
+
+
 
 interface HeaderProps {
   isLoggedIn: boolean;
@@ -30,8 +34,23 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn, setIsLoggedIn }) => {
     }
   };
 
+
+  const locationState = useLocation();
+
+  const getHeaderStyle = () => {
+    if (locationState.pathname === '/') return 'header home-header';
+    if (locationState.pathname === '/about') return 'header about-header';
+    if (locationState.pathname === '/libraries') return 'header libraries-header';
+    if (locationState.pathname === '/login') return 'header login-header';
+    if (locationState.pathname === '/librarian/register') return 'header register-header';
+    if (locationState.pathname === '/profile') return 'header profile-header';
+    if (locationState.pathname === '/profile/edit') return 'header profile-header';
+    
+    return 'header default-header';
+  };
+
   return (
-    <header className="header">
+    <header className={getHeaderStyle()}>
       <div className="header-content">
         <div className="logo">
         <GiOpenBook className='icon' />
@@ -58,9 +77,10 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn, setIsLoggedIn }) => {
           {/* Agar foydalanuvchi login bo'lsa, profile va logout ko'rsatiladi */}
           {isLoggedIn && (
             <>
-              <Link to="/profile" className="profile-btn">Profile</Link>
+              <Link to="/profile" className="profile-btn"> <AiOutlineUser /></Link>
+              <button className='settings-btn'><IoSettingsOutline /></button>
               <button onClick={handleLogout} className="logout-btn">
-                <AiOutlineLogout /> {/* Logout iconi */}
+              <LuLogOut />
               </button>
             </>
           )}

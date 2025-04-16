@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect  } from 'react';
 import '../styles/about.css';
+import { Spin } from 'antd';
 
 interface FAQ {
   id: number;
@@ -68,6 +69,17 @@ const About: React.FC = () => {
   const toggleFAQ = (id: number) => {
     setActiveFAQ(activeFAQ === id ? null : id);
   };
+
+  const [loading, setLoading] = useState(true);
+
+  
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <Spin size="large" className='spin' />;
+
 
   return (
     <div className="about-page">

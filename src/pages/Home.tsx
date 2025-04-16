@@ -1,11 +1,9 @@
 
-
-
-import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-import { FaSearch, FaBookOpen, FaClock, FaMobileAlt } from 'react-icons/fa';
+import { useState , useEffect } from 'react';
+import { FaSearch, FaBookOpen, FaClock, FaMobileAlt, FaLock, FaUserGraduate, FaGlobe, FaHandsHelping, FaHistory } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import '../styles/home.css';
+import { Spin } from 'antd';
 
 const popularBooks = [
   {
@@ -38,16 +36,13 @@ const popularBooks = [
   }
 ];
 
-// const fadeInUp = {
-//   hidden: { opacity: 0, y: 30 },
-//   visible: { opacity: 1, y: 0 }
-// };
+
 
 const Home: React.FC = () => {
   // const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [books, setBooks] = useState<any[]>([]); // Kitoblarni saqlash
-  const [loading, setLoading] = useState(false);
+ 
 
   // API so'rovini yuborish
   const handleSearch = async (e: React.FormEvent) => {
@@ -68,6 +63,20 @@ const Home: React.FC = () => {
       }
     }
   };
+
+
+  const [loading, setLoading] = useState(true);
+
+  
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <Spin size="large" className='spin' />;
+
+
+  
 
   return (
     <div className="home">
@@ -108,7 +117,7 @@ const Home: React.FC = () => {
           </motion.h2>
           <div className="books-grid">
             {loading ? (
-              <div>Yuklanmoqda...</div>
+              <Spin size="large" className="spin" />
             ) : books.length > 0 ? (
               books.map((book) => (
                 <motion.div
@@ -154,7 +163,7 @@ const Home: React.FC = () => {
           Nega bizning tizimdan foydalanish kerak?
         </motion.h2>
         <div className="features-grid">
-          {[0, 1, 2, 3].map((i) => (
+          {[0, 1, 2, 3 ,4, 5, 6, 7, 8].map((i) => (
             <motion.div
               key={i}
               className="feature-card"
@@ -163,24 +172,39 @@ const Home: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.2 }}
             >
-              <div className="feature-icon">
-                {i === 0 && <FaSearch />}
-                {i === 1 && <FaBookOpen />}
-                {i === 2 && <FaClock />}
-                {i === 3 && <FaMobileAlt />}
-              </div>
-              <h3>
-                {i === 0 && 'Tezkor qidiruv'}
-                {i === 1 && 'Keng tanlash imkoniyati'}
-                {i === 2 && 'Vaqtni tejash'}
-                {i === 3 && 'Qulay interfeys'}
-              </h3>
-              <p>
-                {i === 0 && 'Barcha kutubxonalardagi kitoblarni bir joydan qidiring.'}
-                {i === 1 && 'Turli janrdagi adabiyotlar, yangi nashrlar mavjud.'}
-                {i === 2 && 'Online bron qilish orqali navbatsiz xizmatdan foydalaning.'}
-                {i === 3 && 'Mobil qurilmalarga moslashgan va tushunarli dizayn.'}
-              </p>
+               <div className="feature-icon">
+      {i === 0 && <FaSearch />}
+      {i === 1 && <FaBookOpen />}
+      {i === 2 && <FaClock />}
+      {i === 3 && <FaMobileAlt />}
+      {i === 4 && <FaLock />}
+      {i === 5 && <FaUserGraduate />}
+      {i === 6 && <FaGlobe />}
+      {i === 7 && <FaHandsHelping />}
+      {i === 8 && <FaHistory />}
+    </div>
+    <h3>
+      {i === 0 && 'Tezkor qidiruv'}
+      {i === 1 && 'Keng tanlash imkoniyati'}
+      {i === 2 && 'Vaqtni tejash'}
+      {i === 3 && 'Qulay interfeys'}
+      {i === 4 && 'Xavfsiz tizim'}
+      {i === 5 && 'O‘quvchilar uchun mos'}
+      {i === 6 && 'Global foydalanish'}
+      {i === 7 && 'Yordam va qo‘llab-quvvatlash'}
+      {i === 8 && 'Kitoblar tarixi'}
+    </h3>
+    <p>
+      {i === 0 && 'Barcha kutubxonalardagi kitoblarni bir joydan qidiring.'}
+      {i === 1 && 'Turli janrdagi adabiyotlar, yangi nashrlar mavjud.'}
+      {i === 2 && 'Online bron qilish orqali navbatsiz xizmatdan foydalaning.'}
+      {i === 3 && 'Mobil qurilmalarga moslashgan va tushunarli dizayn.'}
+      {i === 4 && 'Foydalanuvchilarning ma’lumotlari xavfsiz saqlanadi.'}
+      {i === 5 && 'Maktab va oliygoh talabalariga qulay platforma.'}
+      {i === 6 && 'Har qanday joydan va vaqtda foydalanish imkoniyati.'}
+      {i === 7 && 'Har doim yordam berishga tayyor xizmat jamoasi.'}
+      {i === 8 && 'Har bir kitob haqida batafsil ma’lumot va tarix.'}
+    </p>
             </motion.div>
           ))}
         </div>
