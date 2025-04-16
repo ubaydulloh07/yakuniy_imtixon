@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getBookById } from '../services/API';
 import { Bookpage } from '../types/type';
-import '../styles/bookDetail.css';
+import '../styles/BookDetail.css';
 import { Spin } from 'antd';
 
 const BookDetail = () => {
