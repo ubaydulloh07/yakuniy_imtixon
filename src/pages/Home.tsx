@@ -1,9 +1,21 @@
-
-import { useState , useEffect } from 'react';
-import { FaSearch, FaBookOpen, FaClock, FaMobileAlt, FaLock, FaUserGraduate, FaGlobe, FaHandsHelping, FaHistory } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
+import {
+  FaSearch,
+  FaBookOpen,
+  FaClock,
+  FaMobileAlt,
+  FaLock,
+  FaUserGraduate,
+  FaGlobe,
+  FaHandsHelping,
+  FaHistory
+} from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import '../styles/home.css';
 import { Spin } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { searchBooks } from '../services/API';
+import { Book } from '../types/type';
 
 const popularBooks = [
   {
@@ -36,47 +48,33 @@ const popularBooks = [
   }
 ];
 
-
-
-const Home: React.FC = () => {
-  // const navigate = useNavigate();
+const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [books, setBooks] = useState<any[]>([]); // Kitoblarni saqlash
- 
-
-  // API so'rovini yuborish
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      setLoading(true);
-      try {
-        // APIga so'rov yuborish
-        const response = await fetch(`https://s-libraries.uz/api/v1/books/books/?q=${encodeURIComponent(searchQuery)}`);
-        const data = await response.json();
-        
-        // Kitoblar ro'yxatini yangilash
-        setBooks(data);
-      } catch (error) {
-        console.error('Xatolik:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
-
-
+  const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1200);
     return () => clearTimeout(timer);
   }, []);
 
-  if (loading) return <Spin size="large" className='spin' />;
+  const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      setLoading(true);
+      try {
+        const results = await searchBooks(searchQuery);
+        setBooks(results);
+      } catch (error) {
+        console.error("Qidiruvda xatolik:", error);
+        setBooks([]);
+      }
+      setLoading(false);
+    }
+  };
 
-
-  
+  if (loading && !searchQuery) return <Spin size="large" className='spin' />;
 
   return (
     <div className="home">
@@ -96,15 +94,12 @@ const Home: React.FC = () => {
                   className="search-input"
                 />
               </div>
-              <button type="submit" className="search-button">
-                Qidirish
-              </button>
+              <button type="submit" className="search-button">Qidirish</button>
             </form>
           </div>
         </div>
       </section>
 
-      {/* Qidirilgan kitoblar */}
       {searchQuery && (
         <section className="search-results">
           <motion.h2
@@ -129,7 +124,10 @@ const Home: React.FC = () => {
                   transition={{ duration: 0.5 }}
                 >
                   <div className="book-image">
-                    <img src={book.image || "https://via.placeholder.com/150"} alt={book.title} />
+                    <img
+                      src={book.image || "https://prd-static-1.sf-cdn.com/resources/images/store/2015/global/640x400/Books/xbooks-640x400-20250314.jpg.pagespeed.ic.0_0jDnm6Ea.webp"}
+                      alt={book.name}
+                    />
                     <div className="book-status">
                       {book.available ? (
                         <span className="available">Mavjud</span>
@@ -139,20 +137,40 @@ const Home: React.FC = () => {
                     </div>
                   </div>
                   <div className="book-info">
-                    <h3>{book.title}</h3>
-                    <p>{book.author}</p>
-                    <button className="book-details-btn">Batafsil</button>
+                    <h3>{book.name}</h3>
+                    <p><strong>Muallif:</strong> {book.author}</p>
+                    <p><strong>Nashriyot:</strong> {book.publisher}</p>
+                    <p><strong>Kutubxona:</strong> {book.library?.name || "Noma'lum"}</p>
+                    <button
+                      className="book-details-btn"
+                      onClick={() => navigate(`/books/${book.id}`)}
+                    >
+                      Batafsil
+                    </button>
                   </div>
                 </motion.div>
               ))
             ) : (
-              <div>Hech qanday natija topilmadi.</div>
+              <motion.div
+                className="no-results"
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+              >
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/6134/6134065.png"
+                  alt="Hech narsa topilmadi"
+                  style={{ width: '180px', marginBottom: '20px' }}
+                />
+                <h3>Hech qanday natija topilmadi</h3>
+                <p>Iltimos, boshqa so‘zni kiriting yoki imlovni tekshiring.</p>
+              </motion.div>
             )}
           </div>
         </section>
       )}
 
-      {/* Boshqa kontentlar: Popular Books */}
       <section className="why-us">
         <motion.h2
           initial={{ opacity: 0, y: -30 }}
@@ -163,7 +181,7 @@ const Home: React.FC = () => {
           Nega bizning tizimdan foydalanish kerak?
         </motion.h2>
         <div className="features-grid">
-          {[0, 1, 2, 3 ,4, 5, 6, 7, 8].map((i) => (
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
             <motion.div
               key={i}
               className="feature-card"
@@ -172,39 +190,39 @@ const Home: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.2 }}
             >
-               <div className="feature-icon">
-      {i === 0 && <FaSearch />}
-      {i === 1 && <FaBookOpen />}
-      {i === 2 && <FaClock />}
-      {i === 3 && <FaMobileAlt />}
-      {i === 4 && <FaLock />}
-      {i === 5 && <FaUserGraduate />}
-      {i === 6 && <FaGlobe />}
-      {i === 7 && <FaHandsHelping />}
-      {i === 8 && <FaHistory />}
-    </div>
-    <h3>
-      {i === 0 && 'Tezkor qidiruv'}
-      {i === 1 && 'Keng tanlash imkoniyati'}
-      {i === 2 && 'Vaqtni tejash'}
-      {i === 3 && 'Qulay interfeys'}
-      {i === 4 && 'Xavfsiz tizim'}
-      {i === 5 && 'O‘quvchilar uchun mos'}
-      {i === 6 && 'Global foydalanish'}
-      {i === 7 && 'Yordam va qo‘llab-quvvatlash'}
-      {i === 8 && 'Kitoblar tarixi'}
-    </h3>
-    <p>
-      {i === 0 && 'Barcha kutubxonalardagi kitoblarni bir joydan qidiring.'}
-      {i === 1 && 'Turli janrdagi adabiyotlar, yangi nashrlar mavjud.'}
-      {i === 2 && 'Online bron qilish orqali navbatsiz xizmatdan foydalaning.'}
-      {i === 3 && 'Mobil qurilmalarga moslashgan va tushunarli dizayn.'}
-      {i === 4 && 'Foydalanuvchilarning ma’lumotlari xavfsiz saqlanadi.'}
-      {i === 5 && 'Maktab va oliygoh talabalariga qulay platforma.'}
-      {i === 6 && 'Har qanday joydan va vaqtda foydalanish imkoniyati.'}
-      {i === 7 && 'Har doim yordam berishga tayyor xizmat jamoasi.'}
-      {i === 8 && 'Har bir kitob haqida batafsil ma’lumot va tarix.'}
-    </p>
+              <div className="feature-icon">
+                {i === 0 && <FaSearch />}
+                {i === 1 && <FaBookOpen />}
+                {i === 2 && <FaClock />}
+                {i === 3 && <FaMobileAlt />}
+                {i === 4 && <FaLock />}
+                {i === 5 && <FaUserGraduate />}
+                {i === 6 && <FaGlobe />}
+                {i === 7 && <FaHandsHelping />}
+                {i === 8 && <FaHistory />}
+              </div>
+              <h3>
+                {i === 0 && 'Tezkor qidiruv'}
+                {i === 1 && 'Keng tanlash imkoniyati'}
+                {i === 2 && 'Vaqtni tejash'}
+                {i === 3 && 'Qulay interfeys'}
+                {i === 4 && 'Xavfsiz tizim'}
+                {i === 5 && 'O‘quvchilar uchun mos'}
+                {i === 6 && 'Global foydalanish'}
+                {i === 7 && 'Yordam va qo‘llab-quvvatlash'}
+                {i === 8 && 'Kitoblar tarixi'}
+              </h3>
+              <p>
+                {i === 0 && 'Barcha kutubxonalardagi kitoblarni bir joydan qidiring.'}
+                {i === 1 && 'Turli janrdagi adabiyotlar, yangi nashrlar mavjud.'}
+                {i === 2 && 'Online bron qilish orqali navbatsiz xizmatdan foydalaning.'}
+                {i === 3 && 'Mobil qurilmalarga moslashgan va tushunarli dizayn.'}
+                {i === 4 && 'Foydalanuvchilarning ma’lumotlari xavfsiz saqlanadi.'}
+                {i === 5 && 'Maktab va oliygoh talabalariga qulay platforma.'}
+                {i === 6 && 'Har qanday joydan va vaqtda foydalanish imkoniyati.'}
+                {i === 7 && 'Har doim yordam berishga tayyor xizmat jamoasi.'}
+                {i === 8 && 'Har bir kitob haqida batafsil ma’lumot va tarix.'}
+              </p>
             </motion.div>
           ))}
         </div>

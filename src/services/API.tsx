@@ -1,5 +1,5 @@
 import axios from "axios";
-import { RegisterLibraryData, ProfileResponse, LoginData } from "../types/type";
+import { RegisterLibraryData, ProfileResponse, LoginData , Book} from "../types/type";
 
 const BASE_URL = "https://s-libraries.uz/api/v1";
 
@@ -124,14 +124,14 @@ export const getLibraryDetail = async (id: string) => {
 };
 
 // Kitoblarni qidirish
-export const searchBooks = async (query: string) => {
-  try {
-    const response = await axios.get(`${BASE_URL}/books/search/book/?q=${encodeURIComponent(query)}`);
-    return response.data;
-  } catch (error) {
-    throw new Error('Kitoblarni qidirishda xatolik yuz berdi.');
-  }
+
+// services/API.ts
+export const searchBooks = async (query: string): Promise<Book[]> => {
+  const response = await fetch(`https://s-libraries.uz/api/v1/books/search/book/?q=${query}`);
+  const data = await response.json();
+  return data;
 };
+
 
 // Logout function
 
@@ -167,3 +167,21 @@ export const logout = async () => {
   }
 };
 
+
+
+///  // Kitoblarni olish
+
+
+export const getAllBooks = async () => {
+  const response = await axios.get(`${BASE_URL}/books/books/`);
+  return response.data;
+};
+
+
+///  book detallarini olish
+
+
+export const getBookById = async (id: string) => {
+  const response = await axios.get(`${BASE_URL}/books/book/${id}`);
+  return response.data;
+};

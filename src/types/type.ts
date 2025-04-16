@@ -65,5 +65,30 @@ interface RegisterLibraryData {
     user: number;
   }
   
+  type Book = {
+    id: number;
+    name: string;
+    author: string;
+    publisher: string;
+    image?: string;
+    available?: boolean;
+    library?: {
+      name: string;
+    };
+  };
+  
 
-  export type { RegisterLibraryData, LoginData, LoginResponse, ProfileResponse  };
+   interface Bookpage {
+    id: number;
+    library: number;
+    name: string;
+    author: string;
+    publisher: string;
+    quantity_in_library: number;
+  }
+  
+
+  
+  
+
+  export type { RegisterLibraryData, LoginData, LoginResponse, ProfileResponse  , Book ,  Bookpage};

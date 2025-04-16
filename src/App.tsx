@@ -10,6 +10,8 @@ import LibraryList from './pages/LibraryList';
 import LibraryDetail from './pages/LibraryDetail';
 import AddBook from './pages/AddBooks';
 import LibraryProfile from './pages/LibraryProfile';
+import BooksPage from './pages/Books';
+import BookDetail from './pages/BooksDetail';
 import './styles/global.css';
 
 const App: React.FC = () => {
@@ -18,24 +20,28 @@ const App: React.FC = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      setIsLoggedIn(true); // Agar token mavjud bo'lsa, foydalanuvchi login qilgan
+      setIsLoggedIn(true);
     }
   }, []);
 
   return (
     <Router>
       <div className="app">
-        <Header  isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+        <Header isLoggedIn={isLoggedIn} />
         <main className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
-            <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} /> {/* setIsLoggedInni uzatamiz */}
+            <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/librarian/register" element={<Register />} />
             <Route path="/libraries" element={<LibraryList />} />
             <Route path="/library/:id" element={<LibraryDetail />} />
+            <Route path="/books" element={<BooksPage />} />
+            <Route path="/books/:id" element={<BookDetail />} />
             <Route path="/librarian/add-book" element={<AddBook />} />
-            {isLoggedIn && <Route path="/profile" element={<LibraryProfile />} />} {/* Profile sahifasini faqat login bo'lganda ko'rsatamiz */}
+            {isLoggedIn && (
+              <Route path="/profile" element={<LibraryProfile />} />
+            )}
           </Routes>
         </main>
         <Footer />
