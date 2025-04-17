@@ -1,22 +1,35 @@
 
 interface RegisterLibraryData {
-    user: {
-      password: string;
-      name: string; 
-      phone: string;
-    };
-    library: {
-      name: string; 
-      address: string;
-      social_media: Array<{
-        platform: string;
-        link: string;
-      }>;
-      can_rent_books: boolean;
-      latitude: string;
-      longitude: string;
-    };
+  password: string;
+  name?: string; 
+  phone: string;
+  library: {
+    address: string;
+    social_media?: Record<string, string>;
+    can_rent_books: boolean;
+    latitude?: string;
+    longitude?: string;
+  };
+  
   }
+
+  // types/registerTypes.ts
+export interface RegisterData {
+  libraryName: string;
+  adminName: string;
+  password: string;
+  phoneNumber: string;
+  allowBookRentals: boolean;
+  address: string;
+  latitude: string;
+  longitude: string;
+  socialMedia: Array<{
+    platform: string;
+    url: string;
+  }>;
+}
+
+
   
   
   interface LoginData {
@@ -70,12 +83,13 @@ interface RegisterLibraryData {
     name: string;
     author: string;
     publisher: string;
-    image?: string;
-    available?: boolean;
-    library?: {
+    image?: string;         // Kitobning rasmi (optional)
+    available?: boolean;    // Kitob mavjudligi (optional)
+    library?: {             // Kutubxona ma'lumotlari (optional)
       name: string;
     };
   };
+  
   
 
    interface Bookpage {
@@ -86,9 +100,19 @@ interface RegisterLibraryData {
     publisher: string;
     quantity_in_library: number;
   }
+
+
+  interface Library {
+    id: number;
+    name: string;
+    image: string | null;
+    address: string;
+    total_books: number;
+    is_active: boolean;
+  }
   
 
   
   
 
-  export type { RegisterLibraryData, LoginData, LoginResponse, ProfileResponse  , Book ,  Bookpage};
+  export type { RegisterLibraryData, LoginData, LoginResponse, ProfileResponse  , Book ,  Bookpage , Library};

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getProfile, updateProfile } from '../services/API';
 import { Button, Modal, Form, Input, Switch, message ,Spin } from 'antd';
-import { FaMapMarkerAlt, FaBookOpen, FaIdCard, FaTelegram , FaUserCircle , FaUserEdit   } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaBookOpen, FaIdCard, FaTelegram , FaUserCircle , FaUserEdit , FaPhone } from 'react-icons/fa';
 import '../styles/libraryProfile.css';
 
 const LibraryProfile: React.FC = () => {
@@ -37,8 +37,11 @@ const LibraryProfile: React.FC = () => {
     }
   };
 
-  if (loading) return <Spin size='large' tip="Profil yuklanmoqda..." className='spin' />;
+  if (loading) return <Spin size='large'  className='spin' />;
   if (error || !profile) return <div className="error">{error || "Ma'lumotlar topilmadi"}</div>;
+
+  console.log(profile);
+  
 
   return (
     <div className="library-profile-page">
@@ -52,10 +55,13 @@ const LibraryProfile: React.FC = () => {
 
       <div className="profile-content">
         <div className="info-side">
-          <p><FaIdCard /> <strong>ID:</strong> {profile.id}</p>
+          <p><FaUserCircle /> <strong>Foydalanuvchi:</strong> {profile.user?.name}</p>
+          <p><FaIdCard /> <strong>ID:</strong> {profile.user?.id}</p>
           <p><FaMapMarkerAlt /> <strong>Manzil:</strong> {profile.address}</p>
           <p><FaBookOpen /> <strong>Kitob ijarasi:</strong> {profile.can_rent_books ? 'Mavjud' : 'Mavjud emas'}</p>
-          <p><FaUserCircle /> <strong> ID:</strong> {profile.user}</p>
+          <p><FaPhone /> <strong>Telefon:</strong> {profile.user?.phone}</p>
+
+         
 
           {profile.social_media?.telegram && (
             <p>
@@ -99,6 +105,8 @@ const LibraryProfile: React.FC = () => {
           <Form.Item name="address" label="Manzil">
             <Input />
           </Form.Item>
+
+     
 
           <Form.Item name="can_rent_books" label="Kitob ijarasi">
             <Switch defaultChecked={profile.can_rent_books} />

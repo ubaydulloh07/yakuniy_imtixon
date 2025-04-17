@@ -89,6 +89,8 @@ const LibraryDetail = () => {
           <p className="book-quantity">
             <FiPackage className="detail-books-icon" /> Soni: {book.quantity_in_library}
           </p>
+
+          <button onClick={() => window.location.href = `/books/${book.id}`} className="book-detail-button">Batafsil</button>
         </div>
       ))}
     </div>

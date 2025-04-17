@@ -12,21 +12,36 @@ const AddBooks = () => {
 
   const [message, setMessage] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      setMessage('Token topilmadi. Iltimos, qaytadan login qiling.');
+      return;
+    }
+
     try {
-      const response = await axios.post('https://s-libraries.uz/api/v1/books/add-books/', formData);
+      const response = await axios.post(
+        'https://s-libraries.uz/api/v1/books/add-books/',
+        [formData],
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       setMessage('Kitob muvaffaqiyatli qo‘shildi!');
       setFormData({
         name: '',
         author: '',
         publisher: '',
         quantity_in_library: '',
-    
       });
       console.log(response.data);
     } catch (error) {

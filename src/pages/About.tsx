@@ -70,15 +70,7 @@ const About: React.FC = () => {
     setActiveFAQ(activeFAQ === id ? null : id);
   };
 
-  const [loading, setLoading] = useState(true);
 
-  
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1200);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (loading) return <Spin size="large" className='spin' />;
 
 
   return (

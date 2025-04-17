@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {  // setIsLoggedIn ol
           <Link to="/" className={isActive('/')}>Bosh sahifa</Link>
           <Link to="/libraries" className={isActive('/libraries')}>Kutubxonalar</Link>
           <Link to="/about" className={isActive('/about')}>Biz haqimizda</Link>
-          <Link to="/books" className="books-btn">Kitoblar</Link>
+          <Link to="/books" className={isActive('/books')}>Kitoblar</Link>
         </nav>
 
         <div className="auth-buttons">

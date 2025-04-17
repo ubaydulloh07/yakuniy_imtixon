@@ -48,6 +48,7 @@ const MapEvents = ({ onLocationSelect }: { onLocationSelect: (lat: number, lng: 
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false); // Yangi modal state
   const [searchQuery, setSearchQuery] = useState('');
   const [position, setPosition] = useState<[number, number]>([41.311081, 69.240562]); // Toshkent markazi
   const [registerData, setRegisterData] = useState<RegisterData>({
@@ -175,10 +176,12 @@ const Register: React.FC = () => {
         }
       });
 
-      alert('Muvaffaqiyatli ro\'yxatdan o\'tdingiz! Admin tasdiqlashini kuting.');
+      setShowModal(true); // Alert o‘rniga modalni ochish
+
       setTimeout(() => {
+        setShowModal(false);
         navigate('/login');
-      }, 2000);
+      }, 3000);
     } catch (error) {
       console.error('Registration failed:', error);
       alert(error instanceof Error ? error.message : 'Ro\'yxatdan o\'tishda xatolik yuz berdi');
@@ -188,7 +191,23 @@ const Register: React.FC = () => {
   
 
   return (
+
+    
     <div className="register-page">
+
+{showModal && (
+        <div className="modal-backdrop">
+          <div className="modal-content">
+            <h2>Ro'yxatdan o'tish yakunlandi</h2>
+            <p>Admin tasdiqlashini kuting...</p>
+          </div>
+        </div>
+      )}
+
+
+
+
+
       <h1>Kutubxonachi ro'yxatdan o'tish</h1>
       <p className="subtitle">Kutubxona ma'lumotlarini to'ldiring</p>
 

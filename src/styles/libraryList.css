@@ -3,7 +3,7 @@
   background: #f5f7fa;
   min-height: 100vh;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(270deg, rgb(231, 231, 231) 50%, #001f3f 50%);
+  background: linear-gradient(141deg, darkcyan 50%, #001f3f 50%);
 }
 
 .library-list-header {
@@ -15,7 +15,7 @@
 
 .library-list-header h1 {
   font-size: 2.5rem;
-  color: white;
+  color: whitesmoke;
 }
 
 .search-box {
@@ -108,4 +108,24 @@
 .error-message svg {
   color: red;
   margin-right: 0.5rem;
+}
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.load-more-btn {
+  padding: 12px 24px;
+  font-size: 16px;
+  background-color: darkcyan;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.load-more-btn:hover {
+  background-color: darkcyan;
 }

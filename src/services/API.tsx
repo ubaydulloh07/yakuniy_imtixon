@@ -17,12 +17,14 @@ export const registerLibrary = async (data: RegisterLibraryData) => {
     const errorData = await response.json();
     console.error("Register Error:", errorData);
     throw new Error(
-      errorData.message || "Ro'yxatdan o'tishda xatolik yuz berdi"
+      errorData.detail || errorData.message || "Ro'yxatdan o'tishda xatolik yuz berdi"
     );
   }
 
   return response.json();
 };
+
+
 
 // Login function
 export const login = async ({ phone, password }: LoginData) => {
@@ -126,11 +128,18 @@ export const getLibraryDetail = async (id: string) => {
 // Kitoblarni qidirish
 
 // services/API.ts
+// export const searchBooks = async (query: string): Promise<Book[]> => {
+//   const response = await fetch(`${BASE_URL}/books/search/book/?q=${query}`);
+//   const data = await response.json();
+//   return data;
+// };
+
 export const searchBooks = async (query: string): Promise<Book[]> => {
-  const response = await fetch(`https://s-libraries.uz/api/v1/books/search/book/?q=${query}`);
+  const response = await fetch(`${BASE_URL}/books/search/book/?q=${query}`);
   const data = await response.json();
-  return data;
+  return data;  // API arrayni qaytaradi, shuning uchun to'g'ridan-to'g'ri data qaytadi
 };
+
 
 
 // Logout function

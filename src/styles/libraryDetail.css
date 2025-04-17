@@ -12,7 +12,7 @@
   justify-content: space-between;
   gap: 2rem;
   flex-wrap: wrap;
-  background-color: transparent;
+  background-color: #001f3f;
   border: white 2px solid;
   border-radius: 10px;
   padding: 2rem;
@@ -21,7 +21,7 @@
 .library-info-box {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 0px;
   min-width: 400px;
 }
 
@@ -140,4 +140,18 @@
   color: white;
   font-size: 20px;
   margin-right: 5px;
+}
+
+.book-detail-button {
+  padding: 10px 20px;
+  border-radius: 15px;
+  border: 2px solid white;
+  color: white;
+  background-color: #001f3f;
+  width: 120px;
+  height: 40px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -8,11 +8,10 @@
 }
 
 .home-header {
-  background-color: transparent !important;
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  position: static;
   border: none;
+  background-color: transparent !important;
+  /* backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px); */
 }
 
 .profile-header {
@@ -58,6 +57,7 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  background-color: transparent;
   border: 2px solid white;
 }
 
@@ -69,9 +69,8 @@
 .settings-btn {
   width: 45px;
   height: 45px;
+  border: none;
   border-radius: 10px;
-  border: 2px solid white;
-  background-color: transparent;
   color: #f0f0f0;
   font-size: 26px !important;
   font-weight: 400;
@@ -79,6 +78,8 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  background-color: transparent;
+  border: 2px solid white;
 }
 
 .settings-btn:hover {
@@ -86,26 +87,11 @@
   background-color: darkcyan;
 }
 
-.logout-btn {
-  width: 45px;
-  height: 45px;
-  border-radius: 10px;
-  border: 2px solid white;
-  background-color: transparent;
-  color: #f0f0f0;
-  font-size: 26px !important;
-  font-weight: 400;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-
 .add-books-btn {
-  background: transparent;
+  background-color: transparent;
+  border: 2px solid white;
   color: #f0f0f0;
   font-size: 18px !important;
-  border: white 1px solid;
   padding: 0.5rem 1rem;
   border-radius: 6px;
 }

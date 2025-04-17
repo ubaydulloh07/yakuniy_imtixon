@@ -20,6 +20,7 @@ const LibraryList: React.FC = () => {
   const [libraries, setLibraries] = useState<Library[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [visibleCount, setVisibleCount] = useState(6); // ✅
 
   useEffect(() => {
     setLoading(true);
@@ -44,6 +45,12 @@ const LibraryList: React.FC = () => {
     library.address.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const visibleLibraries = filteredLibraries.slice(0, visibleCount); // ✅
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + 6);
+  };
+
   return (
     <div className="library-list-container">
       <div className="library-list-header">
@@ -54,7 +61,10 @@ const LibraryList: React.FC = () => {
             type="text"
             placeholder="Qidirish..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setVisibleCount(6); // qidirilganda boshidan 6ta ko'rsatadi
+            }}
           />
         </div>
       </div>
@@ -73,31 +83,43 @@ const LibraryList: React.FC = () => {
           <FiAlertCircle /> {error}
         </div>
       ) : (
-        <div className="libraries-grid">
-          {filteredLibraries.map(library => (
-            <motion.div
-              key={library.id}
-              className="library-card"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Link to={`/library/${library.id}`} state={{ name: library.name }}>
-                <div className="library-image">
-                  <img src={library.image || "https://i.pinimg.com/736x/c5/98/59/c59859449c63060efc95ccd7c6314a4a.jpg"} alt={library.name} />
-                </div>
-                <div className="library-info">
-                  <h2>{library.name}</h2>
-                  <p><FiMapPin /> {library.address}</p>
-                  <p><FiBook /> {library.total_books} ta kitob</p>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </div>
+        <>
+          <div className="libraries-grid">
+            {visibleLibraries.map(library => (
+              <motion.div
+                key={library.id}
+                className="library-card"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Link to={`/library/${library.id}`} state={{ name: library.name }}>
+                  <div className="library-image">
+                    <img src={library.image || "https://i.pinimg.com/736x/c5/98/59/c59859449c63060efc95ccd7c6314a4a.jpg"} alt={library.name} />
+                  </div>
+                  <div className="library-info">
+                    <h2>{library.name}</h2>
+                    <p><FiMapPin /> {library.address}</p>
+                    <p><FiBook /> {library.total_books} ta kitob</p>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+
+          {visibleCount < filteredLibraries.length && (
+            <div className="load-more-container">
+              <button onClick={handleLoadMore} className="load-more-btn">
+                Ko‘proq ko‘rsatish
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
 };
+
+
 
 export default LibraryList;

@@ -1,80 +1,73 @@
+
 import { useState, useEffect } from 'react';
-import {
-  FaSearch,
-  FaBookOpen,
+import { FaSearch ,  FaBookOpen,
   FaClock,
   FaMobileAlt,
   FaLock,
-  FaUserGraduate,
-  FaGlobe,
-  FaHandsHelping,
-  FaHistory
-} from 'react-icons/fa';
+  FaUserGraduate, } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import '../styles/home.css';
 import { Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { searchBooks } from '../services/API';
-import { Book } from '../types/type';
-
-const popularBooks = [
-  {
-    id: 1,
-    title: "O'tkan kunlar",
-    author: "Abdulla Qodiriy",
-    image: "https://kitobxon.com/img_knigi/1447.jpg",
-    available: true
-  },
-  {
-    id: 2,
-    title: "Sariq devni minib",
-    author: "Xudoyberdi To'xtaboyev",
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8l4XhyV2El8Z9M4u7hjmx8t9oJW0CKew48g&s",
-    available: true
-  },
-  {
-    id: 3,
-    title: "Ikki eshik orasi",
-    author: "O'tkir Hoshimov",
-    image: "https://backend.book.uz/user-api/img/img-file-f94aa12ba267f24b219252b42b3ff461.jpg",
-    available: false
-  },
-  {
-    id: 4,
-    title: "Yulduzli tunlar",
-    author: "Pirimqul Qodirov",
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-Sg2Z8Z9liylJovVE-A_QQoPfvbr-5izGOg&s",
-    available: true
-  }
-];
+import { searchBooks, getLibraries } from '../services/API';
+import { Book, Library } from '../types/type';
+import Footer from '../components/Footer';
 
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [libraries, setLibraries] = useState<Library[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [noResults, setNoResults] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1200);
-    return () => clearTimeout(timer);
+    const fetchLibraries = async () => {
+      try {
+        const data = await getLibraries();
+        setLibraries(data);
+      } catch (error) {
+        console.error("Kutubxonalarni olishda xatolik:", error);
+      }
+    };
+
+    fetchLibraries();
   }, []);
 
-  const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      setLoading(true);
-      try {
-        const results = await searchBooks(searchQuery);
-        setBooks(results);
-      } catch (error) {
-        console.error("Qidiruvda xatolik:", error);
+  // Debounce qidiruvni amalga oshiruvchi funksiya
+  useEffect(() => {
+    const debounceTimer = setTimeout(() => {
+      if (searchQuery.trim() === '') {
         setBooks([]);
+        setNoResults(false); // Qidiruv bo'sh bo'lsa, natijalarni tozalash
+        return;
       }
-      setLoading(false);
-    }
-  };
 
-  if (loading && !searchQuery) return <Spin size="large" className='spin' />;
+      const fetchBooks = async () => {
+        setLoading(true);
+        setNoResults(false); // Qidiruvni boshlaganda "Natija yo'q" holatini tozalash
+
+        try {
+          const results = await searchBooks(searchQuery);
+          setBooks(results);
+
+          if (results.length === 0) {
+            setNoResults(true);
+          }
+        } catch (error) {
+          console.error("Qidiruvda xatolik:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchBooks();
+    }, 500); // 500ms kutish vaqti
+
+    return () => {
+      clearTimeout(debounceTimer); // Har safar yangi yozilish sodir bo'lsa, avvalgi so'rovni to'xtatish
+    };
+  }, [searchQuery]); // `searchQuery` o'zgarganda bu kod qayta ishlaydi
 
   return (
     <div className="home">
@@ -83,93 +76,48 @@ const Home = () => {
           <h1>Kutubxonalar tizimiga xush kelibsiz</h1>
           <p>Kitoblarni qidiring, bron qiling va o'qishdan bahramand bo'ling</p>
           <div className="search-container">
-            <form onSubmit={handleSearch} className="search-form">
+            <form
+              onSubmit={(e) => e.preventDefault()}
+              className="search-form"
+            >
               <div className="search-input-wrapper">
                 <FaSearch className="search-icon" />
                 <input
                   type="text"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => setSearchQuery(e.target.value)} 
                   placeholder="Kitob nomi yoki muallif bo'yicha qidiring..."
                   className="search-input"
                 />
               </div>
-              <button type="submit" className="search-button">Qidirish</button>
             </form>
+
+            {searchQuery && (
+              <div className="search-results-inline">
+                {loading ? (
+                  <Spin size="small" />
+                ) : noResults ? (
+                  <div className="no-results-inline">
+                    Hech qanday natija topilmadi
+                  </div>
+                ) : (
+                  books.map((book) => (
+                    <div key={book.id} className="inline-result">
+                      <div className="inline-result-info">
+                        <strong>{book.name}</strong>
+                        <strong>{book.author}</strong>
+                      </div>
+                      <button onClick={() => navigate(`/books/${book.id}`)} className="inline-detail-btn">
+                        Batafsil
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
           </div>
         </div>
       </section>
-
-      {searchQuery && (
-        <section className="search-results">
-          <motion.h2
-            initial={{ opacity: 0, y: -30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            Qidiruv natijalari
-          </motion.h2>
-          <div className="books-grid">
-            {loading ? (
-              <Spin size="large" className="spin" />
-            ) : books.length > 0 ? (
-              books.map((book) => (
-                <motion.div
-                  key={book.id}
-                  className="book-card"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <div className="book-image">
-                    <img
-                      src={book.image || "https://prd-static-1.sf-cdn.com/resources/images/store/2015/global/640x400/Books/xbooks-640x400-20250314.jpg.pagespeed.ic.0_0jDnm6Ea.webp"}
-                      alt={book.name}
-                    />
-                    <div className="book-status">
-                      {book.available ? (
-                        <span className="available">Mavjud</span>
-                      ) : (
-                        <span className="unavailable">Band</span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="book-info">
-                    <h3>{book.name}</h3>
-                    <p><strong>Muallif:</strong> {book.author}</p>
-                    <p><strong>Nashriyot:</strong> {book.publisher}</p>
-                    <p><strong>Kutubxona:</strong> {book.library?.name || "Noma'lum"}</p>
-                    <button
-                      className="book-details-btn"
-                      onClick={() => navigate(`/books/${book.id}`)}
-                    >
-                      Batafsil
-                    </button>
-                  </div>
-                </motion.div>
-              ))
-            ) : (
-              <motion.div
-                className="no-results"
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-              >
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/6134/6134065.png"
-                  alt="Hech narsa topilmadi"
-                  style={{ width: '180px', marginBottom: '20px' }}
-                />
-                <h3>Hech qanday natija topilmadi</h3>
-                <p>Iltimos, boshqa so‘zni kiriting yoki imlovni tekshiring.</p>
-              </motion.div>
-            )}
-          </div>
-        </section>
-      )}
 
       <section className="why-us">
         <motion.h2
@@ -181,7 +129,7 @@ const Home = () => {
           Nega bizning tizimdan foydalanish kerak?
         </motion.h2>
         <div className="features-grid">
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+          {[0, 1, 2, 3, 4, 5].map((i) => (
             <motion.div
               key={i}
               className="feature-card"
@@ -197,9 +145,6 @@ const Home = () => {
                 {i === 3 && <FaMobileAlt />}
                 {i === 4 && <FaLock />}
                 {i === 5 && <FaUserGraduate />}
-                {i === 6 && <FaGlobe />}
-                {i === 7 && <FaHandsHelping />}
-                {i === 8 && <FaHistory />}
               </div>
               <h3>
                 {i === 0 && 'Tezkor qidiruv'}
@@ -208,9 +153,6 @@ const Home = () => {
                 {i === 3 && 'Qulay interfeys'}
                 {i === 4 && 'Xavfsiz tizim'}
                 {i === 5 && 'O‘quvchilar uchun mos'}
-                {i === 6 && 'Global foydalanish'}
-                {i === 7 && 'Yordam va qo‘llab-quvvatlash'}
-                {i === 8 && 'Kitoblar tarixi'}
               </h3>
               <p>
                 {i === 0 && 'Barcha kutubxonalardagi kitoblarni bir joydan qidiring.'}
@@ -219,53 +161,50 @@ const Home = () => {
                 {i === 3 && 'Mobil qurilmalarga moslashgan va tushunarli dizayn.'}
                 {i === 4 && 'Foydalanuvchilarning ma’lumotlari xavfsiz saqlanadi.'}
                 {i === 5 && 'Maktab va oliygoh talabalariga qulay platforma.'}
-                {i === 6 && 'Har qanday joydan va vaqtda foydalanish imkoniyati.'}
-                {i === 7 && 'Har doim yordam berishga tayyor xizmat jamoasi.'}
-                {i === 8 && 'Har bir kitob haqida batafsil ma’lumot va tarix.'}
               </p>
             </motion.div>
           ))}
         </div>
       </section>
 
-      <section className="popular-books">
+      <section className="libraries-preview">
         <motion.h2
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          Eng ko'p qidirilgan kitoblar
+          Kutubxonalar
         </motion.h2>
-        <div className="books-grid">
-          {popularBooks.map((book, index) => (
+        <div className="libraries-grid">
+          {libraries.slice(0, 3).map((lib) => (
             <motion.div
-              key={book.id}
-              className="book-card"
+              key={lib.id}
+              className="library-card"
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.4 }}
             >
-              <div className="book-image">
-                <img src={book.image} alt={book.title} />
-                <div className="book-status">
-                  {book.available ? (
-                    <span className="available">Mavjud</span>
-                  ) : (
-                    <span className="unavailable">Band</span>
-                  )}
+              <div className="ee">
+                <img src="https://prd-static-1.sf-cdn.com/resources/images/store/2015/global/640x400/Books/xbooks-640x400-20250314.jpg.pagespeed.ic.0_0jDnm6Ea.webp" alt={lib.name} />
+                <div className="library-card-info">
+                  <h3>{lib.name}</h3>
+                  <p>Manzil: {lib.address}</p>
+                  <p>Kitoblar soni: {lib.total_books}</p>
                 </div>
-              </div>
-              <div className="book-info">
-                <h3>{book.title}</h3>
-                <p>{book.author}</p>
-                <button className="book-details-btn">Batafsil</button>
               </div>
             </motion.div>
           ))}
         </div>
+        <div className="see-more-container">
+          <button className="see-more-btn" onClick={() => navigate('/libraries')}>
+            Ko‘proq ko‘rish
+          </button>
+        </div>
       </section>
+
+      <Footer />
     </div>
   );
 };
