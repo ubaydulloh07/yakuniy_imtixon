@@ -131,3 +131,80 @@
 .ant-form-item-label > label {
   color: darkcyan !important;
 }
+
+.edit-btn {
+  background-color: #001f3f;
+  font-size: 18px;
+  color: white;
+  padding: 16px;
+  width: 30% !important;
+  height: 40px;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+}
+
+.edit-btn:hover {
+  background-color: darkcyan !important;
+}
+
+.profile-books-section {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: transparent;
+}
+
+.profile-books-section h2 {
+  font-size: 30px;
+  margin-bottom: 20px;
+  color: #001f3f;
+}
+.profile-books-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.profile-book-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: white !important;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  border: darkcyan 3px solid;
+}
+
+.profile-book-card:hover {
+  transform: translateY(-5px);
+}
+
+.profile-books-info h3 {
+  font-size: 22px;
+  margin-top: 10px;
+  color: #001f3f !important;
+}
+
+.profile-books-info p {
+  font-size: 18px;
+  margin-top: 10px;
+  color: darkcyan !important;
+}
+
+.profile-book-button {
+  background-color: darkcyan;
+  color: white;
+  padding: 8px;
+  border: none;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}

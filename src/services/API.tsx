@@ -1,30 +1,27 @@
 import axios from "axios";
-import { RegisterLibraryData, ProfileResponse, LoginData , Book} from "../types/type";
+import {  ProfileResponse, LoginData , Book} from "../types/type";
 
 const BASE_URL = "https://s-libraries.uz/api/v1";
 
 // Kutubxona ro'yxatga olish
-export const registerLibrary = async (data: RegisterLibraryData) => {
-  const response = await fetch(`${BASE_URL}/auth/register-library/`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    console.error("Register Error:", errorData);
-    throw new Error(
-      errorData.detail || errorData.message || "Ro'yxatdan o'tishda xatolik yuz berdi"
-    );
-  }
 
-  return response.json();
+const API_BASE_URL = 'https://s-libraries.uz/api/v1';
+
+export const registerLibrary = async (data: {
+  user: { name: string; phone: string; password: string };
+  library: {
+    name: string;
+    address: string;
+    latitude: string;
+    longitude: string;
+    can_rent_books: boolean;
+    social_media: { platform: string; link: string }[];
+  };
+}) => {
+  const response = await axios.post(`${API_BASE_URL}/auth/register-library/`, data);
+  return response.data;
 };
-
-
 
 // Login function
 export const login = async ({ phone, password }: LoginData) => {
@@ -127,13 +124,6 @@ export const getLibraryDetail = async (id: string) => {
 
 // Kitoblarni qidirish
 
-// services/API.ts
-// export const searchBooks = async (query: string): Promise<Book[]> => {
-//   const response = await fetch(`${BASE_URL}/books/search/book/?q=${query}`);
-//   const data = await response.json();
-//   return data;
-// };
-
 export const searchBooks = async (query: string): Promise<Book[]> => {
   const response = await fetch(`${BASE_URL}/books/search/book/?q=${query}`);
   const data = await response.json();
@@ -193,4 +183,21 @@ export const getAllBooks = async () => {
 export const getBookById = async (id: string) => {
   const response = await axios.get(`${BASE_URL}/books/book/${id}`);
   return response.data;
+};
+
+
+
+
+
+///  profile kitoblar 
+
+// services/bookApi.ts
+
+export const getLibraryBooks = async () => {
+  const res = await axios.get(`${BASE_URL}/libraries/library/books`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+  return res.data;
 };

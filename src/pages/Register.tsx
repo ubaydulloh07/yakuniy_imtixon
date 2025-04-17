@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
@@ -18,13 +19,9 @@ interface RegisterData {
   address: string;
   latitude: string;
   longitude: string;
-  socialMedia: Array<{
-    platform: string;
-    url: string;
-  }>;
+  socialMedia: Array<{ platform: string; url: string }>;
 }
 
-// Leaflet marker ikonkasini sozlash
 const defaultIcon = L.icon({
   iconUrl: markerIcon,
   iconRetinaUrl: markerIcon2x,
@@ -41,16 +38,17 @@ const MapEvents = ({ onLocationSelect }: { onLocationSelect: (lat: number, lng: 
   useMapEvents({
     click: (e) => {
       onLocationSelect(e.latlng.lat, e.latlng.lng);
-    },
+    }
   });
   return null;
 };
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false); // Yangi modal state
+  const [showModal, setShowModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [position, setPosition] = useState<[number, number]>([41.311081, 69.240562]); // Toshkent markazi
+  const [position, setPosition] = useState<[number, number]>([41.311081, 69.240562]);
+
   const [registerData, setRegisterData] = useState<RegisterData>({
     libraryName: '',
     adminName: '',
@@ -65,35 +63,29 @@ const Register: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    setRegisterData(prev => ({
+    setRegisterData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
   };
 
   const handleSocialMediaChange = (index: number, field: 'platform' | 'url', value: string) => {
-    setRegisterData(prev => {
-      const newSocialMedia = [...prev.socialMedia];
-      newSocialMedia[index] = {
-        ...newSocialMedia[index],
-        [field]: value
-      };
-      return {
-        ...prev,
-        socialMedia: newSocialMedia
-      };
+    setRegisterData((prev) => {
+      const updated = [...prev.socialMedia];
+      updated[index][field] = value;
+      return { ...prev, socialMedia: updated };
     });
   };
 
   const addSocialMedia = () => {
-    setRegisterData(prev => ({
+    setRegisterData((prev) => ({
       ...prev,
       socialMedia: [...prev.socialMedia, { platform: '', url: '' }]
     }));
   };
 
   const removeSocialMedia = (index: number) => {
-    setRegisterData(prev => ({
+    setRegisterData((prev) => ({
       ...prev,
       socialMedia: prev.socialMedia.filter((_, i) => i !== index)
     }));
@@ -102,55 +94,46 @@ const Register: React.FC = () => {
   const handleLocationSelect = async (lat: number, lng: number) => {
     setPosition([lat, lng]);
     try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=uz`,
-        {
-          headers: {
-            'Accept-Language': 'uz',
-            'User-Agent': 'SmartLibraryApp/1.0'
-          }
+      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=uz`, {
+        headers: {
+          'Accept-Language': 'uz',
+          'User-Agent': 'SmartLibraryApp/1.0'
         }
-      );
-      const data = await response.json();
-      
-      setRegisterData(prev => ({
+      });
+      const data = await res.json();
+      setRegisterData((prev) => ({
         ...prev,
         address: data.display_name,
         latitude: lat.toString(),
         longitude: lng.toString()
       }));
-    } catch (error) {
-      console.error('Manzilni aniqlashda xatolik:', error);
+    } catch (err) {
+      console.error('Manzilni olishda xatolik:', err);
     }
   };
 
   const handleLocationSearch = async () => {
-    if (searchQuery) {
-      try {
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&accept-language=uz`,
-          {
-            headers: {
-              'Accept-Language': 'uz',
-              'User-Agent': 'SmartLibraryApp/1.0'
-            }
-          }
-        );
-        const data = await response.json();
-        
-        if (data && data[0]) {
-          const { lat, lon, display_name } = data[0];
-          setPosition([parseFloat(lat), parseFloat(lon)]);
-          setRegisterData(prev => ({
-            ...prev,
-            address: display_name,
-            latitude: lat,
-            longitude: lon
-          }));
+    if (!searchQuery) return;
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&accept-language=uz`, {
+        headers: {
+          'Accept-Language': 'uz',
+          'User-Agent': 'SmartLibraryApp/1.0'
         }
-      } catch (error) {
-        console.error('Qidirishda xatolik:', error);
+      });
+      const data = await res.json();
+      if (data[0]) {
+        const { lat, lon, display_name } = data[0];
+        setPosition([parseFloat(lat), parseFloat(lon)]);
+        setRegisterData((prev) => ({
+          ...prev,
+          address: display_name,
+          latitude: lat,
+          longitude: lon
+        }));
       }
+    } catch (err) {
+      console.error('Qidirishda xatolik:', err);
     }
   };
 
@@ -159,43 +142,37 @@ const Register: React.FC = () => {
     try {
       await registerLibrary({
         user: {
-          password: registerData.password,
           name: registerData.adminName,
-          phone: registerData.phoneNumber
+          phone: registerData.phoneNumber,
+          password: registerData.password
         },
         library: {
           name: registerData.libraryName,
           address: registerData.address,
-          social_media: registerData.socialMedia.map(social => ({
-            platform: social.platform,
-            link: social.url
-          })),
-          can_rent_books: registerData.allowBookRentals,
           latitude: registerData.latitude,
-          longitude: registerData.longitude
+          longitude: registerData.longitude,
+          can_rent_books: registerData.allowBookRentals,
+          social_media: registerData.socialMedia.map(s => ({
+            platform: s.platform,
+            link: s.url
+          }))
         }
       });
 
-      setShowModal(true); // Alert o‘rniga modalni ochish
-
+      setShowModal(true);
       setTimeout(() => {
         setShowModal(false);
         navigate('/login');
       }, 3000);
-    } catch (error) {
-      console.error('Registration failed:', error);
-      alert(error instanceof Error ? error.message : 'Ro\'yxatdan o\'tishda xatolik yuz berdi');
+    } catch (error: any) {
+      console.error('Ro‘yxatdan o‘tishda xatolik:', error);
+      alert(error?.response?.data?.detail || 'Xatolik yuz berdi');
     }
   };
-  
-  
 
   return (
-
-    
     <div className="register-page">
-
-{showModal && (
+      {showModal && (
         <div className="modal-backdrop">
           <div className="modal-content">
             <h2>Ro'yxatdan o'tish yakunlandi</h2>
@@ -204,94 +181,45 @@ const Register: React.FC = () => {
         </div>
       )}
 
-
-
-
-
       <h1>Kutubxonachi ro'yxatdan o'tish</h1>
       <p className="subtitle">Kutubxona ma'lumotlarini to'ldiring</p>
 
       <form onSubmit={handleSubmit}>
         <div className="form-section">
           <h2>Kutubxona ma'lumotlari</h2>
-          
           <div className="form-group">
             <label htmlFor="libraryName">Kutubxona nomi</label>
-            <input
-              type="text"
-              id="libraryName"
-              name="libraryName"
-              placeholder="Kutubxona nomini kiriting"
-              value={registerData.libraryName}
-              onChange={handleInputChange}
-              required
-            />
+            <input type="text" id="libraryName" name="libraryName" value={registerData.libraryName} onChange={handleInputChange} required />
           </div>
 
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="adminName">Admin ismi</label>
-              <input
-                type="text"
-                id="adminName"
-                name="adminName"
-                placeholder="Admin ismini kiriting"
-                value={registerData.adminName}
-                onChange={handleInputChange}
-                required
-              />
+              <input type="text" id="adminName" name="adminName" value={registerData.adminName} onChange={handleInputChange} required />
             </div>
 
             <div className="form-group">
               <label htmlFor="phoneNumber">Telefon raqami</label>
-              <input
-                type="tel"
-                id="phoneNumber"
-                name="phoneNumber"
-                placeholder="Telefon raqamini kiriting"
-                value={registerData.phoneNumber}
-                onChange={handleInputChange}
-                required
-              />
+              <input type="tel" id="phoneNumber" name="phoneNumber" value={registerData.phoneNumber} onChange={handleInputChange} required />
             </div>
           </div>
 
           <div className="form-group">
             <label htmlFor="password">Parol</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Parolni kiriting"
-              value={registerData.password}
-              onChange={handleInputChange}
-              required
-            />
+            <input type="password" id="password" name="password" value={registerData.password} onChange={handleInputChange} required />
           </div>
 
           <div className="form-group checkbox">
-            <input
-              type="checkbox"
-              id="allowBookRentals"
-              name="allowBookRentals"
-              checked={registerData.allowBookRentals}
-              onChange={handleInputChange}
-            />
+            <input type="checkbox" id="allowBookRentals" name="allowBookRentals" checked={registerData.allowBookRentals} onChange={handleInputChange} />
             <label htmlFor="allowBookRentals">Kitob ijarasi</label>
           </div>
         </div>
 
         <div className="form-section">
           <h2>Manzil</h2>
-          
           <div className="form-group">
             <div className="search-box">
-              <input
-                type="text"
-                placeholder="Manzilni qidiring"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+              <input type="text" placeholder="Manzilni qidiring" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
               <button type="button" className="search-btn" onClick={handleLocationSearch}>
                 Qidirish
               </button>
@@ -299,15 +227,8 @@ const Register: React.FC = () => {
           </div>
 
           <div className="map-container">
-            <MapContainer
-              center={position}
-              zoom={13}
-              style={{ height: '400px', width: '100%' }}
-            >
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              />
+            <MapContainer center={position} zoom={13} style={{ height: '400px', width: '100%' }}>
+              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
               <Marker position={position} />
               <MapEvents onLocationSelect={handleLocationSelect} />
             </MapContainer>
@@ -316,33 +237,16 @@ const Register: React.FC = () => {
           <div className="location-details">
             <div className="form-group">
               <label>Tanlangan manzil:</label>
-              <input
-                type="text"
-                value={registerData.address}
-                readOnly
-                className="readonly-input"
-              />
+              <input type="text" value={registerData.address} readOnly className="readonly-input" />
             </div>
-
             <div className="form-row">
               <div className="form-group">
                 <label>Latitude:</label>
-                <input
-                  type="text"
-                  value={registerData.latitude}
-                  readOnly
-                  className="readonly-input"
-                />
+                <input type="text" value={registerData.latitude} readOnly className="readonly-input" />
               </div>
-
               <div className="form-group">
                 <label>Longitude:</label>
-                <input
-                  type="text"
-                  value={registerData.longitude}
-                  readOnly
-                  className="readonly-input"
-                />
+                <input type="text" value={registerData.longitude} readOnly className="readonly-input" />
               </div>
             </div>
           </div>
@@ -361,32 +265,18 @@ const Register: React.FC = () => {
               <div className="form-row">
                 <div className="form-group">
                   <label>Platforma</label>
-                  <input
-                    type="text"
-                    value={social.platform}
-                    onChange={(e) => handleSocialMediaChange(index, 'platform', e.target.value)}
-                    placeholder="masalan: telegram"
-                  />
+                  <input type="text" value={social.platform} onChange={(e) => handleSocialMediaChange(index, 'platform', e.target.value)} placeholder="masalan: telegram" />
                 </div>
 
                 <div className="form-group">
                   <label>URL</label>
-                  <input
-                    type="text"
-                    value={social.url}
-                    onChange={(e) => handleSocialMediaChange(index, 'url', e.target.value)}
-                    placeholder="masalan: t.me/username"
-                  />
+                  <input type="text" value={social.url} onChange={(e) => handleSocialMediaChange(index, 'url', e.target.value)} placeholder="masalan: t.me/username" />
                 </div>
 
                 {index > 0 && (
-                  <button
-                    type="button"
-                    className="remove-btn"
-                    onClick={() => removeSocialMedia(index)}
-                  >
+                  <button type="button" className="remove-btn" onClick={() => removeSocialMedia(index)}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M6 18L18 6M6 6l12 12"/>
+                      <path d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
                 )}
@@ -408,4 +298,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register; 
+export default Register;

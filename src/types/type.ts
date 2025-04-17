@@ -10,7 +10,6 @@ interface RegisterLibraryData {
     latitude?: string;
     longitude?: string;
   };
-  
   }
 
   // types/registerTypes.ts

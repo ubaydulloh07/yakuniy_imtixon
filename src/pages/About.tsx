@@ -1,6 +1,5 @@
-import React, { useState , useEffect  } from 'react';
+import React, { useState  } from 'react';
 import '../styles/about.css';
-import { Spin } from 'antd';
 
 interface FAQ {
   id: number;
@@ -22,21 +21,21 @@ const About: React.FC = () => {
   const developers: Developer[] = [
     {
       id: 1,
-      name: "Ubaydulloh_Mirzaaxmadov",
+      name: "Ubaydulloh Mirzaaxmadov",
       role: "Frontend Developer",
       description: "React , Next.js va TypeScript bilan ishlash tajribasiga ega. Zamonaviy web ilovalar yaratish bo'yicha mutaxassis.",
       image: "./user.png"
     },
     {
       id: 2,
-      name: "Backendchini tanimima",
+      name: "Backendchini tanimayman",
       role: "Backend Developer",
       description: "Node.js va PostgreSQL bilan ishlovchi tajribali dasturchi. API va ma'lumotlar bazasi arxitekturasi bo'yicha mutaxassis.",
       image: "./backend.png"
     },
     {
       id: 3,
-      name: "Ubaydulloh_Mirzaaxmadov",
+      name: "Ubaydulloh Mirzaaxmadov",
       role: "UI/UX Designer",
       description: "Foydalanuvchi interfeyslarini loyihalash va prototiplash bo'yicha tajribali dizayner.",
       image: "./user.png"

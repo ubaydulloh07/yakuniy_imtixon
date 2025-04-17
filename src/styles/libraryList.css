@@ -129,3 +129,8 @@
 .load-more-btn:hover {
   background-color: darkcyan;
 }
+
+.logout-btn {
+  background-color: transparent !important;
+  border: 1px solid white !important;
+}
