@@ -135,7 +135,7 @@
 }
 
 .login-form button[type="submit"]:disabled {
-  background-color: rgba(0, 123, 255, 0.5);
+  background-color: darkcyan;
   cursor: not-allowed;
 }
 
@@ -146,7 +146,7 @@
 }
 
 .register-link a {
-  color: #007bff;
+  color: #001f3f;
   text-decoration: none;
   font-weight: 500;
 }

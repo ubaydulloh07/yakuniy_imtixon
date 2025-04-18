@@ -33,7 +33,7 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {  // setIsLoggedIn ol
       <div className="header-content">
         <div className="logo">
           <GiOpenBook className="icon" />
-          <Link to="/"><h1>EZMA</h1></Link>
+          <Link to="/"><h1>Ezma</h1></Link>
         </div>
 
         <nav className="nav-links">

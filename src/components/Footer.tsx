@@ -1,13 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/footer.css';
+import { GiOpenBook } from "react-icons/gi";
 
 const Footer: React.FC = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-section">
-          <h3>Ezma</h3>
+          <div className='footer-logo'>
+            <GiOpenBook className="icon" />
+            <h3>Ezma</h3>
+          </div>
           <p>O'zbekiston kutubxonalarida kitoblarni qidirish va topish uchun zamonaviy tizim</p>
         </div>
 

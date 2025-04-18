@@ -1,5 +1,5 @@
 .header {
-  padding: 20px 40px;
+  padding: 10px 50px;
   position: sticky;
   top: 0;
   z-index: 1111;
@@ -12,15 +12,6 @@
   background-color: transparent !important;
   /* backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px); */
-}
-
-.profile-header {
-  padding: 20px 40px;
-  position: sticky;
-  top: 0;
-  z-index: 1111;
-  background-color: #001f3f;
-  border-bottom: #f0f0f0 1px solid;
 }
 
 .header-content {
@@ -42,16 +33,15 @@
 .icon {
   font-size: 37px;
   color: white !important;
-  margin-bottom: 8px;
 }
 
 .profile-btn {
   text-decoration: none;
-  width: 45px;
-  height: 45px;
+  width: 35px;
+  height: 35px;
   border-radius: 10px;
   color: #f0f0f0;
-  font-size: 26px !important;
+  font-size: 22px !important;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -67,12 +57,11 @@
 }
 
 .settings-btn {
-  width: 45px;
-  height: 45px;
-  border: none;
+  width: 35px;
+  height: 35px;
   border-radius: 10px;
   color: #f0f0f0;
-  font-size: 26px !important;
+  font-size: 22px !important;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -88,28 +77,29 @@
 }
 
 .add-books-btn {
+  height: 35px;
   background-color: transparent;
   border: 2px solid white;
   color: #f0f0f0;
-  font-size: 18px !important;
-  padding: 0.5rem 1rem;
+  font-size: 14px !important;
+  padding: 4px 10px;
   border-radius: 6px;
+  text-align: center;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.logout-btn:hover {
+.add-books-btn:hover {
   color: white;
   background-color: darkcyan;
 }
 
-.logo a {
-  text-decoration: none;
-  color: #333;
-}
-
 .logo h1 {
-  font-size: 28px;
+  font-size: 26px;
+  margin-top: 10px;
   font-weight: 400;
-  letter-spacing: 2px;
   color: white;
 }
 
@@ -121,8 +111,7 @@
 .nav-links a {
   text-decoration: none;
   color: #f0f0f0;
-
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 400;
   transition: color 0.3s ease;
 }
@@ -173,10 +162,19 @@
   color: white;
 }
 
+.login-btn.active {
+  color: white;
+  background-color: darkcyan;
+}
+
 .register-btn {
   color: white;
   border: darkcyan 1px solid;
   font-style: italic;
+}
+.register-btn.active {
+  color: white;
+  background-color: darkcyan;
 }
 
 .register-btn:hover {

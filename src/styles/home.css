@@ -7,7 +7,7 @@
 
 .hero {
   width: 100%;
-  height: 100vh;
+  height: 100vh !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,7 +15,7 @@
   text-align: center;
   color: white;
   padding: 0 1rem;
-  background-image: url(https://www.tilegiant.co.uk/media/wysiwyg/29739.jpg);
+  background-image: url(../../public/home-bg.png);
   background-position: center;
   background-size: cover;
 }
@@ -230,7 +230,6 @@
 /* Kutubxonalar */
 .libraries-preview {
   padding: 60px 100px;
-  height: 100vh;
   background: linear-gradient(115deg, darkcyan 40%, #001f3f 90%);
 }
 
@@ -324,12 +323,9 @@
 }
 
 .see-more-btn:hover {
-  background-color: #2563eb;
+  opacity: 0.8;
 }
 
-/* ////voenrv[oerv] */
-
-/* 🔍 Qidiruv natijalari konteyneri */
 .search-results-inline {
   max-height: 200px !important;
   overflow-y: auto !important;
