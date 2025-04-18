@@ -1,5 +1,4 @@
 
-
 import { useEffect, useState } from 'react';
 import { getAllBooks } from '../services/API';
 import { Bookpage } from '../types/type';
@@ -37,7 +36,7 @@ const BooksPage = () => {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
-    setCurrentPage(1); 
+    setCurrentPage(1);
 
     const filtered = books.filter(
       (book) =>
@@ -48,13 +47,52 @@ const BooksPage = () => {
     setFilteredBooks(filtered);
   };
 
-
   const indexOfLastBook = currentPage * booksPerPage;
   const indexOfFirstBook = indexOfLastBook - booksPerPage;
   const currentBooks = filteredBooks.slice(indexOfFirstBook, indexOfLastBook);
   const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  const renderPagination = () => {
+    const pages = [];
+
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1);
+
+      if (currentPage > 4) {
+        pages.push('...');
+      }
+
+      const startPage = Math.max(2, currentPage - 1);
+      const endPage = Math.min(totalPages - 1, currentPage + 1);
+
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+
+      if (currentPage < totalPages - 3) {
+        pages.push('...');
+      }
+
+      pages.push(totalPages);
+    }
+
+    return pages.map((page, index) => (
+      <button
+        key={index}
+        className={currentPage === page ? 'active' : ''}
+        onClick={() => typeof page === 'number' && paginate(page)}
+        disabled={page === '...'}
+      >
+        {page}
+      </button>
+    ));
+  };
 
   return (
     <div className="books-page">
@@ -101,15 +139,7 @@ const BooksPage = () => {
 
       {!loading && totalPages > 1 && (
         <div className="pagination">
-          {Array.from({ length: totalPages }, (_, index) => (
-            <button
-              key={index + 1}
-              className={currentPage === index + 1 ? 'active' : ''}
-              onClick={() => paginate(index + 1)}
-            >
-              {index + 1}
-            </button>
-          ))}
+          {renderPagination()}
         </div>
       )}
     </div>
