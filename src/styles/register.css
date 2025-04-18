@@ -86,7 +86,6 @@ input[type="tel"]:focus {
   cursor: pointer;
 }
 
-/* Location Section */
 .search-box {
   display: flex;
   gap: 1rem;
@@ -129,7 +128,6 @@ input[type="tel"]:focus {
   cursor: not-allowed;
 }
 
-/* Social Media Section */
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -184,7 +182,6 @@ input[type="tel"]:focus {
   color: #c82333;
 }
 
-/* Form Actions */
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -223,7 +220,6 @@ input[type="tel"]:focus {
   background-color: #0b5ed7;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .register-page {
     padding: 1rem;

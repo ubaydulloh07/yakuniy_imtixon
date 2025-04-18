@@ -35,18 +35,18 @@ const Home = () => {
     fetchLibraries();
   }, []);
 
-  // Debounce qidiruvni amalga oshiruvchi funksiya
+
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
       if (searchQuery.trim() === '') {
         setBooks([]);
-        setNoResults(false); // Qidiruv bo'sh bo'lsa, natijalarni tozalash
+        setNoResults(false); 
         return;
       }
 
       const fetchBooks = async () => {
         setLoading(true);
-        setNoResults(false); // Qidiruvni boshlaganda "Natija yo'q" holatini tozalash
+        setNoResults(false); 
 
         try {
           const results = await searchBooks(searchQuery);
@@ -63,12 +63,12 @@ const Home = () => {
       };
 
       fetchBooks();
-    }, 500); // 500ms kutish vaqti
+    }, 500);
 
     return () => {
-      clearTimeout(debounceTimer); // Har safar yangi yozilish sodir bo'lsa, avvalgi so'rovni to'xtatish
+      clearTimeout(debounceTimer);
     };
-  }, [searchQuery]); // `searchQuery` o'zgarganda bu kod qayta ishlaydi
+  }, [searchQuery]); 
 
   return (
     <div className="home">

@@ -45,7 +45,7 @@ const LibraryList: React.FC = () => {
     library.address.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const visibleLibraries = filteredLibraries.slice(0, visibleCount); // ✅
+  const visibleLibraries = filteredLibraries.slice(0, visibleCount); 
 
   const handleLoadMore = () => {
     setVisibleCount((prev) => prev + 6);
@@ -63,7 +63,7 @@ const LibraryList: React.FC = () => {
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
-              setVisibleCount(6); // qidirilganda boshidan 6ta ko'rsatadi
+              setVisibleCount(6); 
             }}
           />
         </div>

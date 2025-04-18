@@ -10,7 +10,7 @@ interface HeaderProps {
   isLoggedIn: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {  // setIsLoggedIn olib tashlandi
+const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => { 
   const location = useLocation();
 
   const isActive = (path: string) => {

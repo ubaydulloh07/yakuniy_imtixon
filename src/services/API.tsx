@@ -23,7 +23,7 @@ export const registerLibrary = async (data: {
   return response.data;
 };
 
-// Login function
+// Login qilish
 export const login = async ({ phone, password }: LoginData) => {
   try {
     const response = await axios.post(`${BASE_URL}/auth/login/`, { phone, password });
@@ -39,7 +39,7 @@ export const login = async ({ phone, password }: LoginData) => {
   }
 };
 
-// Profilni olish
+// Profile
 export const getProfile = async (): Promise<ProfileResponse> => {
   const token = localStorage.getItem("token");
   if (!token) {
@@ -94,7 +94,7 @@ export const updateProfile = async (data: any) => {
 };
 
 
-// Kutubxonalar ro'yxatini olish
+// Kutubxonalar 
 export const getLibraries = async () => {
   try {
     const res = await axios.get(`${BASE_URL}/libraries/libraries/`);
@@ -105,7 +105,7 @@ export const getLibraries = async () => {
   }
 };
 
-// Kutubxona kitoblar detallarini olish
+// Kutubxona detail
 export const getLibraryDetail = async (id: string) => {
   const res = await fetch(`${BASE_URL}/libraries/library/${id}/`, {
     method: 'GET',
@@ -132,7 +132,7 @@ export const searchBooks = async (query: string): Promise<Book[]> => {
 
 
 
-// Logout function
+// Logout 
 
 
 
@@ -155,7 +155,7 @@ export const logout = async () => {
     );
 
     if (response.status === 200) {
-      // Serverdan chiqish muvaffaqiyatli bo'lsa
+     
       console.log("Foydalanuvchi tizimdan chiqdi");
       return response.data;
     } else {
@@ -168,7 +168,7 @@ export const logout = async () => {
 
 
 
-///  // Kitoblarni olish
+///  Kitoblarni olish
 
 
 export const getAllBooks = async () => {
@@ -185,7 +185,7 @@ export const getAllBooks = async () => {
 }
 
 
-///  book detallarini olish
+///  kitob detail
 
 
 export const getBookById = async (id: string) => {
@@ -212,7 +212,7 @@ export const getLibraryBooks = async () => {
 
 
 
-//// delete book
+//// delete kitob
 
 export const deleteBook = async (id: number) => {
   const token = localStorage.getItem('token');

@@ -12,7 +12,6 @@ interface RegisterLibraryData {
   };
   }
 
-  // types/registerTypes.ts
 export interface RegisterData {
   libraryName: string;
   adminName: string;
@@ -82,9 +81,9 @@ export interface RegisterData {
     name: string;
     author: string;
     publisher: string;
-    image?: string;         // Kitobning rasmi (optional)
-    available?: boolean;    // Kitob mavjudligi (optional)
-    library?: {             // Kutubxona ma'lumotlari (optional)
+    image?: string;
+    available?: boolean;    
+    library?: {           
       name: string;
     };
   };

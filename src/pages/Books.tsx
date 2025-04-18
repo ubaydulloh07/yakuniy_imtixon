@@ -37,7 +37,7 @@ const BooksPage = () => {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
-    setCurrentPage(1); // Qidiruvda har doim 1-sahifadan boshlansin
+    setCurrentPage(1); 
 
     const filtered = books.filter(
       (book) =>
@@ -48,7 +48,7 @@ const BooksPage = () => {
     setFilteredBooks(filtered);
   };
 
-  // Pagination uchun sahifadagi elementlar
+
   const indexOfLastBook = currentPage * booksPerPage;
   const indexOfFirstBook = indexOfLastBook - booksPerPage;
   const currentBooks = filteredBooks.slice(indexOfFirstBook, indexOfLastBook);

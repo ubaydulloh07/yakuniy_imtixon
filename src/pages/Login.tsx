@@ -8,7 +8,7 @@ import '../styles/login.css';
 import { login } from '../services/API';
 
 interface LoginProps {
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>; // setIsLoggedIn ni props sifatida olish
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>; 
 }
 
 const Login: React.FC<LoginProps> = ({ setIsLoggedIn }) => {
@@ -25,14 +25,14 @@ const Login: React.FC<LoginProps> = ({ setIsLoggedIn }) => {
     try {
       const response = await login({ phone, password });
       
-      // Tokenni saqlash
+     
       localStorage.setItem('token', response.access);
       localStorage.setItem('user', JSON.stringify(response.user));
 
-      // setIsLoggedIn ni chaqirish
+      
       setIsLoggedIn(true);
 
-      // Muvaffaqiyatli login bo'lganda profil sahifasiga yo'naltirish
+     
       toast.success('Muvaffaqiyatli tizimga kirdingiz!', {
         onClose: () => {
           navigate('/profile');
@@ -40,7 +40,7 @@ const Login: React.FC<LoginProps> = ({ setIsLoggedIn }) => {
       });
     } catch (err) {
       if (err instanceof Error) {
-        // API dan kelgan xatoni ko'rsatish
+     
         toast.error('Login yoki prol notogri ');
       } else {
         toast.error("Login yoki parol notogri ");
