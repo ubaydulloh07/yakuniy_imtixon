@@ -75,19 +75,22 @@ const Login: React.FC<LoginProps> = ({ setIsLoggedIn }) => {
         <form className="login-form" onSubmit={handleSubmit}>
           <input
             type="tel"
-            placeholder="Phone Number"
+            placeholder="900079410"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             required
+            defaultValue="900079410"
           />
+
           
           <div className="password-input-wrapper">
             <input
               type={showPassword ? "text" : "password"}
-              placeholder="Password"
+              placeholder="ubaydulloh"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              defaultValue="ubaydulloh"
             />
             <button
               type="button"
