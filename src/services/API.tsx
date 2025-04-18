@@ -172,9 +172,17 @@ export const logout = async () => {
 
 
 export const getAllBooks = async () => {
-  const response = await axios.get(`${BASE_URL}/books/books/`);
-  return response.data;
-};
+  const token = localStorage.getItem("token")
+  const response = await fetch(`${BASE_URL}/books/books/`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  if (!response.ok) {
+    throw new Error("Failed to fetch books")
+  }
+  return response.json()
+}
 
 
 ///  book detallarini olish
@@ -191,7 +199,7 @@ export const getBookById = async (id: string) => {
 
 ///  profile kitoblar 
 
-// services/bookApi.ts
+
 
 export const getLibraryBooks = async () => {
   const res = await axios.get(`${BASE_URL}/libraries/library/books`, {
@@ -201,3 +209,43 @@ export const getLibraryBooks = async () => {
   });
   return res.data;
 };
+
+
+
+//// delete book
+
+export const deleteBook = async (id: number) => {
+  const token = localStorage.getItem('token');
+  const res = await fetch(`https://s-libraries.uz/api/v1/books/book/${id}/`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) {
+    throw new Error('Kitobni o‘chirishda xatolik yuz berdi');
+  }
+  return true;
+};
+
+
+///  kitobni  edit qilish  
+
+
+export const updateBook = async (id: number, bookData: any) => {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("Token mavjud emas");
+
+  const response = await axios.put(
+    `${BASE_URL}/books/book/${id}/`,
+    bookData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response.data;
+};
+

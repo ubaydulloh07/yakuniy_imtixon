@@ -27,8 +27,8 @@ const AddBooks = () => {
 
     try {
       const response = await axios.post(
-        'https://s-libraries.uz/api/v1/books/add-books/',
-        [formData],
+        'https://s-libraries.uz/api/v1/books/books/',
+        formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
