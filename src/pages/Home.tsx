@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
-import { FaSearch ,  FaBookOpen,
+import { FaSearch , 
+  FaBookOpen,
   FaClock,
   FaMobileAlt,
   FaLock,
@@ -11,7 +12,7 @@ import { Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { searchBooks, getLibraries } from '../services/API';
 import { Book, Library } from '../types/type';
-import Footer from '../components/Footer';
+
 
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -204,7 +205,7 @@ const Home = () => {
         </div>
       </section>
 
-      <Footer />
+   
     </div>
   );
 };
