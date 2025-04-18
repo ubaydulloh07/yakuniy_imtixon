@@ -10,8 +10,8 @@
 .home-header {
   border: none;
   background-color: transparent !important;
-  /* backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px); */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .header-content {
